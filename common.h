@@ -36,7 +36,7 @@ typedef struct {
 } command_t;
 
 void memcpy_s (char* dst, const char* src, size_t size);
-#define size_calc(type, count) (sizeof (type) * count)
+#define size_calc(type, count) (sizeof(type) * (count))
 #define alloc(type, count) malloc(size_calc (type, count))
 
 #endif

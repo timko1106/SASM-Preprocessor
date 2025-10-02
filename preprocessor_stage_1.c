@@ -96,7 +96,7 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 			if (ptr[full] == ARG_CLOSE && i + full < length) {//')' SHOULD BE INCLUDED.
 				++full;
 			} else {
-				printf ("ERROR: wrong macro usage \"%.*s\"\n", full + 1, ptr);
+				printf ("ERROR: wrong macro usage \"%.*s\"\nSee %.*s\n", full + 1, ptr, 1 + name_len + full, ptr - name_len - 1);
 				return EXIT_FAILURE;
 			}
 			char* ptr_temp = temps.buffer + temps.length;
@@ -124,7 +124,7 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 				const char c = ptr_temp_old[j];
 				if (c == ARG_SEP) {
 					locs[nargs++] = j;
-					if (nargs > infos->arg_count) {
+					if (nargs > info->arg_count) {
 						printf ("ERROR: macro %.*s requires %d arguments, provided %d\n", 
 								info->name_len, info->name, info->arg_count, nargs);
 						return EXIT_FAILURE;
@@ -371,8 +371,8 @@ int stage_1 (state_t* src, state_t* dest) {
 		prev = curr;
 	}
 	const unsigned BLOCKS = count + 2 * MAX_MACRO_ARGS;
-	printf ("To allocate: %lu bytes (%u blocks)\n", size_calc (macro_info, BLOCKS), BLOCKS);
-	macro_info* infos = alloc (macro_info, count + 2 * MAX_MACRO_ARGS);
+	printf ("To allocate: %lu bytes (%u blocks)\n", size_calc(macro_info, BLOCKS), BLOCKS);
+	macro_info* infos = alloc (macro_info, BLOCKS);
 	if (infos == NULL) {
 		printf ("ERROR: can't allocate %lu bytes\n", size_calc (macro_info, BLOCKS));
 		return EXIT_FAILURE;
@@ -402,112 +402,92 @@ int stage_1 (state_t* src, state_t* dest) {
 				break;
 			}
 			if (x == 0) {
-				goto END;
+				break;
 			}
-			if (x == MACRO_USE) {
-				++ptr;//first byte of macro name
-				unsigned len = 0;
-				while (is_valid (*(ptr + len))) {
-					++len;
-				}
-				//Search for macro:
-				word macro_idx = -1;
-				bool found = false;
-				//ptr[0...len-1] - macro name
-				for (word i = 0; i < detected; ++i) {
-					if (infos[i].name_len == len && memcmp (infos[i].name, ptr, len) == 0) {
-						macro_idx = i;
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					printf ("ERROR: couldn't find macro %.*s\n", len, ptr);
-					exit_code = EXIT_FAILURE;
-					goto END;
-				}
-				const macro_info* macro = &(infos[macro_idx]);
-				if ((ptr[len] == ARG_OPEN) != (macro->arg_count != 0)) {
-					printf ("ERROR: macro %.*s should have %d arguments, but gets %d\n", 
-							len, ptr, macro->arg_count, ptr[len] == ARG_OPEN);
-					exit_code = EXIT_FAILURE;
-					goto END;
-				}
-				if (ptr[len] == ARG_OPEN) {
-					unsigned full = len + 2;//1'%' +len+1 '('
-					--ptr;//byte % before name of macro
-
-					char* dst_step1 = temps.buffer + temps.length;
-					const char* dst_step1_old = dst_step1;
-					memcpy_s(dst_step1, ptr, full);
-					dst_step1 += full;
-					int open_braces = 1;
-					
-					while (true) {
-						bool err = false;
-						switch (ptr[full]) {
-						case ARG_OPEN:
-							++open_braces;
-							break;
-						case ARG_CLOSE:
-							if (open_braces == 0) {
-								printf ("ERROR: not valid braces sequence \"%.*s)\"\n",
-										full, ptr);
-								exit_code = EXIT_FAILURE;
-								goto END;
-							}
-							--open_braces;
-							break;
-						case LF:
-						case 0:
-							err = true;
-							break;
-						default:
-							++full;
-							break;
-						}
-						if (err) break;
-						if (open_braces == 0) break;
-					}
-					if (ptr[full] == ARG_CLOSE) {
-						++full;
-					} else {
-						printf ("ERROR: wrong macro usage \"%.*s\"\n", full + 1, ptr);
-						exit_code = EXIT_FAILURE;
-						goto END;
-					}
-					{
-					const char* _ptrk = ptr + 1 + macro->name_len + 1;
-					// - ((%) + name_len + ('(' )) - ')'
-					if (macro_expand (&_ptrk, full - (1 + macro->name_len + 1) - 1, infos, detected, &dst_step1, 0, true) == EXIT_FAILURE) {
-						exit_code = EXIT_FAILURE;
-						goto END;
-					}
-					}
-
-					*dst_step1++ = ARG_CLOSE;
-					const unsigned length = dst_step1 - dst_step1_old;
-					temps.length += length;
-
-					char* _new = dest->buffer + dest->length;
-					char* _old = _new;
-					if (macro_expand ((const char**)&dst_step1_old, length, infos, detected, &_new, macro_idx, true) == EXIT_FAILURE) {
-						exit_code = EXIT_FAILURE;
-						goto END;
-					}
-					temps.length -= length;
-					ptr += full;
-					dest->length += (_new - _old);
-				} else {
-					printf ("Macro %.*s\n", macro->name_len, macro->name);
-					memcpy_s (dest->buffer + dest->length, macro->definition, macro->def_len);
-					dest->length += macro->def_len;
-
-					ptr += len;
-				}
+			if (x != MACRO_USE) {
+				dest->buffer[dest->length++] = *(ptr++);
 				continue;
 			}
-			dest->buffer[dest->length++] = *(ptr++);
+			++ptr;//first byte of macro name
+			unsigned len = 0;
+			while (is_valid (*(ptr + len))) {
+				++len;
+			}
+			//Search for macro:
+			word macro_idx = -1;
+			bool found = false;
+			//ptr[0...len-1] - macro name
+			for (word i = 0; i < detected; ++i) {
+				if (infos[i].name_len == len && memcmp (infos[i].name, ptr, len) == 0) {
+					macro_idx = i;
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				printf ("ERROR: couldn't find macro %.*s\n", len, ptr);
+				exit_code = EXIT_FAILURE;
+				goto END;
+			}
+			const macro_info* macro = &(infos[macro_idx]);
+			if ((ptr[len] == ARG_OPEN) != (macro->arg_count != 0)) {
+				printf ("ERROR: macro %.*s should have %d arguments, but gets %d\n", 
+						len, ptr, macro->arg_count, ptr[len] == ARG_OPEN);
+				exit_code = EXIT_FAILURE;
+				goto END;
+			}
+			if (ptr[len] == ARG_OPEN) {
+				unsigned full = len + 2;//1'%' +len+1 '('
+				--ptr;//byte % before name of macro
+
+				int open_braces = 1;
+				
+				while (true) {
+					bool err = false;
+					switch (ptr[full]) {
+					case ARG_OPEN:
+						++open_braces;
+						break;
+					case ARG_CLOSE:
+						if (open_braces == 0) {
+							printf ("ERROR: not valid braces sequence \"%.*s)\"\n",
+									full, ptr);
+							exit_code = EXIT_FAILURE;
+							goto END;
+						}
+						--open_braces;
+						break;
+					case LF:
+					case 0:
+						err = true;
+						break;
+					default:
+						++full;
+						break;
+					}
+					if (err) break;
+					if (open_braces == 0) break;
+				}
+				if (ptr[full] == ARG_CLOSE) {
+					++full;
+				} else {
+					printf ("ERROR: wrong macro usage \"%.*s\"\n", full + 1, ptr);
+					exit_code = EXIT_FAILURE;
+					goto END;
+				}
+				char* _new = dest->buffer + dest->length;
+				char* _old = _new;
+				if (macro_expand (&ptr, full, infos, detected, &_new, macro_idx, true) == EXIT_FAILURE) {
+					exit_code = EXIT_FAILURE;
+					goto END;
+				}
+				dest->length += (_new - _old);
+			} else {
+				printf ("Macro %.*s\n", macro->name_len, macro->name);
+				memcpy_s (dest->buffer + dest->length, macro->definition, macro->def_len);
+				dest->length += macro->def_len;
+				ptr += len;
+			}
 		}
 	}
 	if (temps.length != 0) {
