@@ -10,6 +10,7 @@
 #define LIMIT 4096
 
 #define MARK '@'
+#define MARK_DEF ':'
 
 //# should be FIRST symbol of the line. Bracket or space should be next after name.
 #define MACRO_DEF '#'
@@ -51,6 +52,7 @@ typedef struct {
 typedef struct {
 	command_t _;
 	const char* comment; // To store after preprocessing.
+	unsigned comment_length;//На самом деле указывают на препроцессированный буффер...
 	uint8_t mark_id; // mark identifier for C_MOV.
 	//All marks would get their identifiers (no reason to store here).
 } command_ext_t;
@@ -61,8 +63,8 @@ int preprocess (state_t* state, int fd_out);
 //Also adds line #rsp R03
 int stage_1 (state_t* state, state_t* state_new);
 //State 2: compilation, marks indexing
-int stage_2 (state_t* state, command_ext_t** commands, char*** marks);
+int stage_2 (state_t* state, command_ext_t** commands, char*** marks, word** loads, word** stores, word* count);
 //Stage 3: marks setting for MOV-es, final output
-int stage_3 (state_t* state, command_ext_t* commands, char** marks);
+int stage_3 (state_t* state, command_ext_t* commands, char** marks, word* loads, word* stores, word count);
 
 #endif

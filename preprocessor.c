@@ -20,19 +20,32 @@ int preprocess (state_t* state, int fd_out) {
 	printf ("%.*s", (int)next.length, next.buffer);
 	write (fd_out, next.buffer, next.length);
 	return EXIT_SUCCESS;
-	/*command_ext_t* commands = NULL;
+	/*Future stages #2 and #3.
+
+	word count = 0;
+	word *loads = NULL, *stores = NULL;
+	command_ext_t* commands = NULL;
 	char** marks = NULL;
-	int exit_code = EXIT_FAILURE;
-	if (stage_2 (&next, &commands, &marks) == EXIT_SUCCESS) {
-		if (stage_3 (&next, commands, marks) == EXIT_SUCCESS) {
-			exit_code = EXIT_SUCCESS;
-		}
+	int exit_code = EXIT_SUCCESS;
+	if (stage_2 (&next, &commands, &marks, &loads, &stores, &count) == EXIT_FAILURE) {
+		goto cleanup;
 	}
-	if (commands) {
-		free (commands);
-	}
-	if (marks) {
+cleanup:
+	if (marks != NULL) {
 		free (marks);
+		marks = NULL;
+	}
+	if (commands != NULL) {
+		free (commands);
+		commands = NULL;
+	}
+	if (loads != NULL) {
+		free (loads);
+		loads = NULL;
+	}
+	if (stores != NULL) {
+		free (stores);
+		stores = NULL;
 	}
 	return exit_code;*/
 }
@@ -42,12 +55,12 @@ int main (int argc, const char** argv) {
 		printf ("Need 2 arguments:\n1) Name of input file\n2) Name of output file\n");
 		return EXIT_FAILURE;
 	}
-	int fd1 = open (argv[1], O_RDONLY, 0640);
+	int fd1 = open (argv[1], O_RDONLY);
 	if (fd1 == -1) {
 		printf ("Couldn't open input file: %s\n", strerror (errno));
 		return EXIT_FAILURE;
 	}
-	int fd2 = open (argv[2], O_WRONLY | O_CREAT);
+	int fd2 = open (argv[2], O_WRONLY | O_CREAT, 0640);
 	if (fd2 == -1) {
 		printf ("Couldn't open output file: %s\n", strerror (errno));
 		close (fd1);

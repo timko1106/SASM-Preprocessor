@@ -56,63 +56,111 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 			printf ("ERROR: Couldn't find macro %.*s\n", name_len, name);
 			return EXIT_FAILURE;
 		}
-		macro_info* info = &(infos[pos]);
-		if (ptr[0] == ARG_OPEN) {
+		const macro_info* info = &(infos[pos]);//Защита от дурака (себя).
+		if (ptr[0] == ARG_OPEN && i < length) {
 			if (info->arg_count == 0) {
 				printf ("ERROR: macro %.*s doesn't use arguments\n", name_len, name);
 				return EXIT_FAILURE;
 			}
-			if (allow_recurse) {
-				word locs[MAX_MACRO_ARGS + 1] = {};//From '('.
-				locs[0] = 0;
-				unsigned nargs = 1, j = 1;
-				for (++i; i < length; ++i, ++j) {
-					const char c = ptr[j];
-					if (c == ARG_SEP) {
-						locs[nargs++] = j;
-						if (nargs > infos->arg_count) {
-							printf ("ERROR: macro %.*s requires %d arguments, provided %d\n", 
-									info->name_len, info->name, info->arg_count, nargs);
-							return EXIT_FAILURE;
-						}
-						continue;
-					}
-					if (c == ARG_CLOSE) {
-						locs[nargs] = j;
-						break;
-					}
-					//Do nothing.
-				}
-				if (ptr[j] != ARG_CLOSE) {
-					printf ("ERROR: macro %.*s should end by %c\n", info->name_len, info->name, ARG_CLOSE);
-					return EXIT_FAILURE;
-				}
-				if (nargs != info->arg_count) {
-					printf ("ERROR: macro %.*s requires %d arguments, provided %d\n", 
-							info->name_len, info->name, info->arg_count, nargs);
-					return EXIT_FAILURE;
-				}
-				printf ("Macro %.*s(%.*s)\n", info->name_len, info->name, j - 1, ptr + 1);
-				//Make temporary macroses:
-				for (unsigned k = 0; k < nargs; ++k) {
-					static char all_names[] = "0123456789";
-					infos[detected + k].arg_count = 0;
-					infos[detected + k].definition = ptr + locs[k] + 1;
-					infos[detected + k].def_len = locs[k + 1] - (locs[k] + 1);
-					infos[detected + k].name = &(all_names[k]);
-					infos[detected + k].name_len = 1;
-				}
-				const char* _definition = info->definition;
-				if (macro_expand (&_definition, info->def_len, infos, detected + nargs, &ptr2, detected, false) == EXIT_FAILURE) {
-					return EXIT_FAILURE;
-				}
-				ptr += j;
-
-				++ptr;//')'
-				++i;
-				continue;
+			if (!allow_recurse) {
+				printf ("ERROR: Recursive macroses are not supported (expanding %.*s)\n", name_len, name);
+				return EXIT_FAILURE;
 			}
-			printf ("ERROR: Recursive macroses are not supported (expanding %.*s)\n", name_len, name);
+			int open_braces = 1;
+			unsigned full = 1;
+			while (i + full < length) {//Проверка на ПСП.
+				bool err = false;
+				switch (ptr[full]) {
+				case ARG_OPEN:
+					++open_braces;
+					break;
+				case ARG_CLOSE:
+					if (open_braces == 0) {
+						printf ("ERROR: not valid braces sequence \"%.*s)\"\n",
+								full, ptr);
+						return EXIT_FAILURE;
+					}
+					--open_braces;
+					break;
+				case LF:
+				case 0:
+					err = true;
+					break;
+				default://В качестве аргументов может быть закинуто... что угодно.
+					++full;
+					break;
+				}
+				if (err) break;
+				if (open_braces == 0) break;
+			}
+			if (ptr[full] == ARG_CLOSE && i + full < length) {//')' SHOULD BE INCLUDED.
+				++full;
+			} else {
+				printf ("ERROR: wrong macro usage \"%.*s\"\n", full + 1, ptr);
+				return EXIT_FAILURE;
+			}
+			char* ptr_temp = temps.buffer + temps.length;
+			const char* const ptr_temp_old = ptr_temp;
+			*ptr_temp++ = ARG_OPEN;
+			const char* const ptr_temp_start = ptr_temp;
+			{
+			const char* ptr_k = ptr + 1;
+			temps.length += 100;//Max argument unpack length. Temporary solution of recursive arguments' unpacking.
+			if (macro_expand (&ptr_k, full - 2, infos, detected, &ptr_temp, 0, true) == EXIT_FAILURE) {
+				return EXIT_FAILURE;
+			}
+			temps.length -= 100;
+			}
+			ptr += full;//byte AFTER ).
+			i += full;
+			const unsigned length_temps_real = ptr_temp - ptr_temp_old;
+			const unsigned length_temps = ptr_temp - ptr_temp_start;
+			temps.length += length_temps_real;
+
+			word locs[MAX_MACRO_ARGS + 1] = {};//From '('.
+			locs[0] = 0;
+			unsigned nargs = 1;
+			for (unsigned j = 1; j < length_temps; ++j) {
+				const char c = ptr_temp_old[j];
+				if (c == ARG_SEP) {
+					locs[nargs++] = j;
+					if (nargs > infos->arg_count) {
+						printf ("ERROR: macro %.*s requires %d arguments, provided %d\n", 
+								info->name_len, info->name, info->arg_count, nargs);
+						return EXIT_FAILURE;
+					}
+					continue;
+				}
+				//Do nothing.
+			}
+			locs[nargs] = length_temps_real;
+			if (nargs != info->arg_count) {
+				printf ("ERROR: macro %.*s requires %d arguments, provided %d\n", 
+						info->name_len, info->name, info->arg_count, nargs);
+				return EXIT_FAILURE;
+			}
+			printf ("Macro %.*s(%.*s)\n", info->name_len, info->name, length_temps, ptr_temp_start);
+			//Make temporary macroses:
+			for (unsigned k = 0; k < nargs; ++k) {
+				static char all_names[] = "0123456789";
+				infos[detected + k].arg_count = 0;
+				infos[detected + k].definition = ptr_temp_old + locs[k] + 1;
+				infos[detected + k].def_len = locs[k + 1] - (locs[k] + 1);
+				infos[detected + k].name = &(all_names[k]);
+				infos[detected + k].name_len = 1;
+			}
+			const char* _definition = info->definition;
+			const char* const _ptr2_prev = ptr2;
+			if (macro_expand (&_definition, info->def_len, infos, detected + nargs, &ptr2, detected, false) == EXIT_FAILURE) {
+				return EXIT_FAILURE;
+			}
+			printf ("Expanded like:\n\"%.*s\"\n", (int)(ptr2 - _ptr2_prev), _ptr2_prev);
+			temps.length -= length_temps_real;
+			//Исходные указатели подвинули: см. 96, 113, 114.
+			continue;
+		}
+		if (info->arg_count != 0) {
+			printf ("ERROR: Macro %.*s should accept arguments!\n", info->name_len, info->name);
 			return EXIT_FAILURE;
 		}
 		memcpy_s (ptr2, info->definition, info->def_len);
@@ -274,6 +322,7 @@ static int macro_define (const char** _ptr, macro_info* infos, unsigned detected
 						exit_code = EXIT_FAILURE;
 						goto END;
 					}
+					++ptr_;
 				}
 				shift += ptr_ - ptr_real;
 				if (macro_expand (&ptr_real, ptr_ - ptr_real, infos, detected + nargs, &ptr2, detected, true) == EXIT_FAILURE) {
@@ -389,12 +438,36 @@ int stage_1 (state_t* src, state_t* dest) {
 					--ptr;//byte % before name of macro
 
 					char* dst_step1 = temps.buffer + temps.length;
-					char* dst_step1_old = dst_step1;
+					const char* dst_step1_old = dst_step1;
 					memcpy_s(dst_step1, ptr, full);
 					dst_step1 += full;
-
-					while (ptr[full] != ARG_CLOSE && ptr[full] != LF && ptr[full] != 0) {
-						++full;
+					int open_braces = 1;
+					
+					while (true) {
+						bool err = false;
+						switch (ptr[full]) {
+						case ARG_OPEN:
+							++open_braces;
+							break;
+						case ARG_CLOSE:
+							if (open_braces == 0) {
+								printf ("ERROR: not valid braces sequence \"%.*s)\"\n",
+										full, ptr);
+								exit_code = EXIT_FAILURE;
+								goto END;
+							}
+							--open_braces;
+							break;
+						case LF:
+						case 0:
+							err = true;
+							break;
+						default:
+							++full;
+							break;
+						}
+						if (err) break;
+						if (open_braces == 0) break;
 					}
 					if (ptr[full] == ARG_CLOSE) {
 						++full;
@@ -436,6 +509,10 @@ int stage_1 (state_t* src, state_t* dest) {
 			}
 			dest->buffer[dest->length++] = *(ptr++);
 		}
+	}
+	if (temps.length != 0) {
+		printf ("ERROR: temps not clear!\n");
+		exit_code = EXIT_FAILURE;
 	}
 END:;
 	free (infos);

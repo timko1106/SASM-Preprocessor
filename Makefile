@@ -13,9 +13,11 @@ common.o: common.c common.h
 	$(CC) $(CFLAGS) -c common.c -o common.o
 preprocessor_stage1.o: common.o preprocessor.h preprocessor_stage_1.c
 	$(CC) $(CFLAGS) -c preprocessor_stage_1.c -o preprocessor_stage1.o
-preprocessor.o: preprocessor_stage1.o preprocessor.c preprocessor.h
-	$(CC) $(CFLAGS) -c preprocessor.c -o preprocessor.o
-$(TARGET): common.o preprocessor_stage1.o preprocessor.o
+#preprocessor_stage2.o: common.o preprocessor.h preprocessor_stage_2.c
+#	$(CC) $(CFLAGS) -c preprocessor_stage_2.c -o preprocessor_stage2.o
+#preprocessor.o: preprocessor_stage1.o preprocessor_stage2.o preprocessor.c preprocessor.h
+#	$(CC) $(CFLAGS) -c preprocessor.c -o preprocessor.o
+$(TARGET): common.o preprocessor_stage1.o preprocessor.o # preprocessor_stage2.o
 	$(CC) $(CFLAGS) preprocessor.o common.o preprocessor_stage1.o -o $(TARGET)
 
 
