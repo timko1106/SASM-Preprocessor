@@ -4,7 +4,59 @@
 #include <stddef.h>
 #include <stdint.h> 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include <stdbool.h>
+
+#include <ctype.h>
+
+
+//VAL1 <- VAL2 ...
+#define SEND_1 '<'
+#define SEND_2 '-'
+
+#define LF '\n'
+#define MARK '@'
+#define MARK_DEF ':'
+
+#define COMMENT ';'
+
+#define REGISTERS 4
+
+//binary register encoding NOT SUPPORTED!
+
+#define ARG_OPEN '('
+#define ARG_CLOSE ')'
+
+//Start of register identifier
+#define R_START 'R'
+#define r_START 'r'
+
+#define REG_CMP 'F'
+#define REG_JMP 'C'
+
+#define J_CARRY 'C'
+#define J_SIGN 'S'
+#define J_ZERO 'Z'
+
+#define CMP_SIGN '~'
+#define RAND '?'
+
+//Initialization operands:
+//All marks L - Load register from
+//Example:
+//L(1): R0 <- R0 - load to register 1
+#define LOAD 'L'
+//All marks S - Store register to
+//Example:
+//S(1): R0 <- R0 - store register 1
+#define STORE 'S'
+//All marks J - unconditional jump
+#define JUMP 'J'
+
+//All marks P - addresses to write register to
+#define ADDR 'P'
 
 typedef uint8_t word;
 
@@ -18,9 +70,9 @@ typedef enum : word {
 	C_MUL 	= 6,
 	C_DIV 	= 7,
 	C_CMP 	= 8,
-	C_JMP_C = 9,
-	C_JMP_S = 10,
-	C_JMP_Z = 11,
+	C_JMP_C = 9, // Jump on carry flag
+	C_JMP_S = 10,// Jump on sign  flag
+	C_JMP_Z = 11,// Jump on zero  flag
 	C_JMP 	= 12,
 	C_RAND 	= 13,
 	C_INC 	= 14,
@@ -29,14 +81,68 @@ typedef enum : word {
 
 extern uint8_t sizes[16];
 
+extern const char* cmd_names[16];
+
 typedef struct {
 	cmd_t _type;
 	word src, dst;//Source and destination registers
 	word param;
 } command_t;
 
+typedef struct {
+	command_t _;
+	const char* comment; // To store after preprocessing.
+	unsigned comment_length;//На самом деле указывают на препроцессированный буффер...
+	word mark_id; // mark identifier for C_MOV.
+	//All marks would get their identifiers (no reason to store here).
+} command_ext_t;
+
+typedef struct {
+	const char* name;
+	unsigned cmd_id, mark_len;
+	word addr;//addr - address in program.
+} mark_info_t;
+
+typedef struct {
+	unsigned cmd_count;
+	command_ext_t* commands;
+	mark_info_t* marks;
+	word m_count;
+} parsed_t;
+
+typedef struct {
+	word mark_id;
+	word reg;//register
+} mark_param_t;
+
+typedef struct {
+	parsed_t _;
+	//Loads, Stores and Addresses count
+	word l_count, s_count, p_count, j_count;
+	mark_param_t *l_marks, *s_marks;
+	word *p_marks, *j_marks;
+} parsed_ext_t;
+
+//4KB хватит всем
+#define LIMIT 4096
+
+typedef struct {
+	char buffer[LIMIT];
+	size_t length;
+} state_t;
+
+bool is_valid (char);
+
 void memcpy_s (char* dst, const char* src, size_t size);
-#define size_calc(type, count) (sizeof(type) * (count))
-#define alloc(type, count) malloc(size_calc (type, count))
+
+void data_parsed_free (parsed_t* program);
+void data_parsed_ext_free (parsed_ext_t* program);
+
+//extended -> allocated as parsed_ext_t, else as parsed_t.
+//Проходов будет много. ОЧЕНЬ МНОГО.
+int parse (state_t* state, parsed_t* program, bool extended_mode);
+
+#define size_calc(type, count) (sizeof(type) * ((size_t)(count)) )
+#define alloc(type, count) (type*) malloc(size_calc (type, count))
 
 #endif

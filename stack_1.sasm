@@ -1,4 +1,4 @@
-RSP <- 0xFF ; 0 1
+R03 <- 0xFF ; 0 1
 RC <- @_init
 ; 2 3
 

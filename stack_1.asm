@@ -1,4 +1,5 @@
-RSP <- 0xFF ; 0 1
+#RSP %rsp
+%RSP <- 0xFF ; 0 1
 RC <- @_init
 ; 2 3
 

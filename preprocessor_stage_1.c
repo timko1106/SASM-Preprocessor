@@ -1,5 +1,4 @@
 #include "preprocessor.h"
-#include <ctype.h>
 #include <stdbool.h>
 
 typedef struct {
@@ -7,9 +6,7 @@ typedef struct {
 	word name_len, arg_count, def_len;
 } macro_info;
 
-static bool is_valid (char x) {
-	return isalpha (x) || isdigit (x) || x == '_';
-}
+
 
 static state_t macroses = {};//macro expansions.
 static state_t temps = {};//temporary macro arguments' expansion (in direct usage) and no-args macro definitions (should be copied to macroses).

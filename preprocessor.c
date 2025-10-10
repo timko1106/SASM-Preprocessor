@@ -19,35 +19,23 @@ int preprocess (state_t* state, int fd_out) {
 	}
 	printf ("%.*s", (int)next.length, next.buffer);
 	write (fd_out, next.buffer, next.length);
-	return EXIT_SUCCESS;
-	/*Future stages #2 and #3.
+	/*state_t final = {};
+	final.buffer[0] = 0;
+	final.length = 0;*/
+	//return EXIT_SUCCESS;
+	//Future stages #2 and #3.
 
-	word count = 0;
-	word *loads = NULL, *stores = NULL;
-	command_ext_t* commands = NULL;
-	char** marks = NULL;
+	parsed_ext_t parsed = {};
+
 	int exit_code = EXIT_SUCCESS;
-	if (stage_2 (&next, &commands, &marks, &loads, &stores, &count) == EXIT_FAILURE) {
+	if (stage_2 (&next, &parsed) == EXIT_FAILURE) {
+		exit_code = EXIT_FAILURE;
 		goto cleanup;
 	}
+	//exit_code = stage_3 (&next, &final, &parsed);
 cleanup:
-	if (marks != NULL) {
-		free (marks);
-		marks = NULL;
-	}
-	if (commands != NULL) {
-		free (commands);
-		commands = NULL;
-	}
-	if (loads != NULL) {
-		free (loads);
-		loads = NULL;
-	}
-	if (stores != NULL) {
-		free (stores);
-		stores = NULL;
-	}
-	return exit_code;*/
+	data_parsed_ext_free (&parsed);
+	return exit_code;
 }
 
 int main (int argc, const char** argv) {
