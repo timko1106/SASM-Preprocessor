@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -pedantic -g -fsanitize=address
-#CFLAGS=-O2 -Wall # -Werror -Wextra -pedantic
+#CFLAGS=-Wall -Wextra -Werror -pedantic -g -fsanitize=address
+CFLAGS=-O2 -Wall -Werror -Wextra -pedantic
 TARGET=preprocessor
 
 .PHONY: all clean
