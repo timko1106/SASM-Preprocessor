@@ -3,7 +3,8 @@
 
 typedef struct {
 	const char* name, *definition;// Stored in modified source code
-	word name_len, arg_count, def_len;
+	word name_len, arg_count;
+	unsigned def_len;
 } macro_info;
 
 
@@ -31,7 +32,7 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 			++name_len;
 			++i;
 		}
-		const char* name = ptr;
+		const char* const name = ptr;
 		ptr += name_len;
 		word pos = -1;
 		bool found = false;
@@ -102,11 +103,11 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 			const char* const ptr_temp_start = ptr_temp;
 			{
 			const char* ptr_k = ptr + 1;
-			temps.length += 100;//Max argument unpack length. Temporary solution of recursive arguments' unpacking.
+			temps.length += 400;//Max argument unpack length. Temporary solution of recursive arguments' unpacking.
 			if (macro_expand (&ptr_k, full - 2, infos, detected, &ptr_temp, 0, true) == EXIT_FAILURE) {
 				return EXIT_FAILURE;
 			}
-			temps.length -= 100;
+			temps.length -= 400;
 			}
 			ptr += full;//byte AFTER ).
 			i += full;
@@ -114,7 +115,7 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 			const unsigned length_temps = ptr_temp - ptr_temp_start;
 			temps.length += length_temps_real;
 
-			word locs[MAX_MACRO_ARGS + 1] = {};//From '('.
+			unsigned locs[MAX_MACRO_ARGS + 1] = {};//From '('.
 			locs[0] = 0;
 			unsigned nargs = 1;
 			for (unsigned j = 1; j < length_temps; ++j) {
@@ -168,14 +169,43 @@ static int macro_expand (const char** src, unsigned length, macro_info* infos, u
 	return EXIT_SUCCESS;
 }
 
+static unsigned shrink_temp (const char** _ptr) {
+	const char* ptr = (const char*) *_ptr;
+	char* ptr_tmp = temps.buffer + temps.length;
+	char* ptr_tmp_old = ptr_tmp;
+	unsigned shift = 0;
+	bool is_ok = true;
+	while (is_ok) {
+		is_ok = false;
+		char c = ptr[shift];
+		while (c != MACRO_CONTINUE && c != LF && c != 0) {
+			*ptr_tmp++ = c;
+			c = ptr[++shift];
+		}
+		if (c == MACRO_CONTINUE) {
+			is_ok = true;
+			while (c != LF && c != 0) {
+				c = ptr[++shift];
+				*ptr_tmp++ = c;
+			}
+		}
+		if (c == LF) {
+			++shift;
+		}
+	}
+	ptr += shift;
+	*_ptr = ptr;
+	return ptr_tmp - ptr_tmp_old;
+}
+
 static int macro_define (const char** _ptr, macro_info* infos, unsigned detected) {
 	int exit_code = EXIT_SUCCESS;
-	const char* ptr = (char*)*_ptr;
+	const char* ptr = (const char*)*_ptr;
 	char* ptr2 = macroses.buffer + macroses.length;
 	const char* const ptr2_old = ptr2;
 	/*
 	Comments FORBIDDEN!
-	#macro_name(arg_name) (SPACE)line_1 \
+	#macro_name(arg_name)line_1 \
 	line_2 \
 	line_3 \
 	...
@@ -191,7 +221,7 @@ static int macro_define (const char** _ptr, macro_info* infos, unsigned detected
 	*/
 	++ptr;//# пропускаем.
 	const char* _old = ptr;
-	while (*ptr != ARG_OPEN && *ptr != ' ' && *ptr != 0) {
+	while (*ptr != ARG_OPEN && *ptr != ' ' && *ptr != 0 && *ptr != LF) {
 		if (!is_valid (*ptr)) {
 			printf ("ERROR: macro can include only digits, letters and '_' (see %.*s)\n", (int)(ptr - _old + 1), _old);
 			return EXIT_FAILURE;
@@ -206,44 +236,18 @@ static int macro_define (const char** _ptr, macro_info* infos, unsigned detected
 	info->name_len = name_len;
 
 	if (*ptr == ' ') {
-		char* ptr_tmp = temps.buffer + temps.length;
-		char* ptr_tmp_old = ptr_tmp;
 		++ptr;
 		info->arg_count = 0;
 		info->definition = ptr2;
-		unsigned shift = 0;
-		bool is_ok = true;
-		while (is_ok) {
-			is_ok = false;
-			char c = ptr[shift];
-			while (c != MACRO_CONTINUE && c != LF && c != 0) {
-				*ptr_tmp++ = c;
-				//*ptr2++ = c;
-				//ptr[def_len++] = c;
-				c = ptr[++shift];
-			}
-			if (c == MACRO_CONTINUE) {
-				is_ok = true;
-				while (c != LF && c != 0) {
-					c = ptr[++shift];
-					*ptr_tmp++ = c;
-					//*ptr2++ = c;
-					//ptr[def_len++] = c;
-				}
-			}
-			if (c == LF) {
-				++shift;
-			}
-		}
-		const unsigned length = ptr_tmp - ptr_tmp_old;
+		const char* ptr_tmp_old = temps.buffer + temps.length;
+		const unsigned length = shrink_temp (&ptr);
 		temps.length += length;
-		if (macro_expand ((const char**)&ptr_tmp_old, length, infos, detected, &ptr2, 0, true) == EXIT_FAILURE) {
+		if (macro_expand (&ptr_tmp_old, length, infos, detected, &ptr2, 0, true) == EXIT_FAILURE) {
 			exit_code = EXIT_FAILURE;
 			goto END;
 		}
 		temps.length -= length;
 		info->def_len = ptr2 - ptr2_old;
-		ptr += shift;
 	} else if (*ptr == '(') {
 		word locs[MAX_MACRO_ARGS + 1] = {};//From '('.
 		locs[0] = 0;
@@ -293,54 +297,19 @@ static int macro_define (const char** _ptr, macro_info* infos, unsigned detected
 				infos[detected + k].name_len, infos[detected + k].name,
 				infos[detected + k].def_len, infos[detected + k].definition);
 		}
-
+		//ptr[j] = ARG_CLOSE
 		ptr += j + 1;
 		info->definition = ptr2;
 
-		unsigned shift = 0;
-		bool is_ok = true;
-		while (is_ok) {
-			is_ok = false;
-			char c = ptr[shift];
-			while (c != MACRO_CONTINUE && c != LF && c != 0) {
-				if (c != MACRO_USE) {
-					*ptr2++ = c;
-					c = ptr[++shift];
-					continue;
-				}
-				const char* ptr_real = ptr + shift;
-				const char* ptr_ = ptr_real + 1;
-				while (is_valid (*ptr_)) ++ptr_;
-				if (*ptr_ == ARG_OPEN) {
-					while (*ptr_ != ARG_CLOSE && *ptr_ != LF && *ptr_ != 0) ++ptr_;
-					if (*ptr_ != ARG_CLOSE) {
-						printf ("ERROR: incorrect argument used in macro %.*s:\nExpansion of:\n\"%.*s\"\n",
-								name_len, _old, (int)(ptr_ - ptr_real + 1), ptr_real);
-						exit_code = EXIT_FAILURE;
-						goto END;
-					}
-					++ptr_;
-				}
-				shift += ptr_ - ptr_real;
-				if (macro_expand (&ptr_real, ptr_ - ptr_real, infos, detected + nargs, &ptr2, detected, true) == EXIT_FAILURE) {
-					exit_code = EXIT_FAILURE;
-					goto END;
-				}
-				c = ptr[shift];
-			}
-			if (c == MACRO_CONTINUE) {
-				is_ok = true;
-				while (c != LF && c != 0) {
-					c = ptr[++shift];
-					*ptr2++ = c;
-				}
-			}
-			if (c == LF) {
-				++shift;
-			}
+		const char* ptr_temp_old = temps.buffer + temps.length;
+		const unsigned length = shrink_temp (&ptr);
+		temps.length += length;
+		if (macro_expand (&ptr_temp_old, length, infos, detected + nargs, &ptr2, detected, true) == EXIT_FAILURE) {
+			exit_code = EXIT_FAILURE;
+			goto END;
 		}
+		temps.length -= length;
 		info->def_len = ptr2 - ptr2_old;
-		ptr += shift;
 	} else {
 		printf ("ERROR: illegal macro declaration, should be \"%.*s \"...\" or \"%.*s(...)\"",
 				info->name_len, info->name, info->name_len, info->name);
@@ -444,6 +413,7 @@ int stage_1 (state_t* src, state_t* dest) {
 					switch (ptr[full]) {
 					case ARG_OPEN:
 						++open_braces;
+						++full;
 						break;
 					case ARG_CLOSE:
 						if (open_braces == 0) {
@@ -453,6 +423,7 @@ int stage_1 (state_t* src, state_t* dest) {
 							goto END;
 						}
 						--open_braces;
+						++full;
 						break;
 					case LF:
 					case 0:
@@ -463,7 +434,10 @@ int stage_1 (state_t* src, state_t* dest) {
 						break;
 					}
 					if (err) break;
-					if (open_braces == 0) break;
+					if (open_braces == 0) {
+						--full;
+						break;
+					}
 				}
 				if (ptr[full] == ARG_CLOSE) {
 					++full;

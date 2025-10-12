@@ -1,0 +1,165 @@
+To allocate: 648 bytes (27 blocks)
+Macro R argument K
+Add argument: "K", definition: "%0"
+Declared macros R:
+"R%0"
+
+
+
+
+
+Declared macros REG:
+"2"
+
+
+
+
+
+Macro R(2)
+Expanded like:
+"R2"
+Declared macros reg:
+"R2"
+
+
+
+
+
+Declared macros nop:
+"R0 <- R0"
+
+
+
+
+
+Macro push argument DST
+Add argument: "DST", definition: "%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Declared macros push:
+" 
+@P <- R03 
+S(%0): R0 <- R0 
+P: R0 <- R0 
+R%0 <- 1 
+R03 <- R03 - R%0"
+
+
+
+
+
+Macro pop argument SRC
+Add argument: "SRC", definition: "%0"
+Declared macros pop:
+" 
+R03 <- R03++ 
+@P <- R03 
+L(%0): R0 <- R0 
+P: R0 <- R0"
+
+
+
+
+
+Macro rsp
+Macro rsp
+Macro rsp
+Macro nop
+Macro reg
+Macro push(2)
+Expanded like:
+" 
+@P <- R03 
+S(2): R0 <- R0 
+P: R0 <- R0 
+R2 <- 1 
+R03 <- R03 - R2"
+Macro pop(2)
+Expanded like:
+" 
+R03 <- R03++ 
+@P <- R03 
+L(2): R0 <- R0 
+P: R0 <- R0"
+Macro rsp
+[parsing.c:644]: Allocated 888 bytes for commands (37 objects)
+[parsing.c:675]: Allocated 144 bytes for marks (6 objects)
+[parsing.c:679]: Allocated 2 bytes for loader marks (1 objects)
+[parsing.c:682]: Allocated 2 bytes for store marks (1 objects)
+[parsing.c:685]: Allocated 2 bytes for addresses marks (2 objects)
+Parsed command_ext[0] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[1] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
+Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
+Parsed command_ext[3] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Поэтому для пробрасывания значения в стек будет использован "костыль"", mark="None"}
+Parsed command_ext[4] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" (сейчас для примера регистр R2):", mark="None"}
+Parsed command_ext[5] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) write R2 по назначению", mark="None"}
+Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) R2 = 1", mark="None"}
+Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 3) R03 -= R2", mark="None"}
+Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Для взятия из стека нужен следующий метод (регистр R2):", mark="None"}
+Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) inc R03", mark="None"}
+Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) read R2", mark="None"}
+Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[13] { _ = { dst=2, src=0, param=21, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[15] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="P"}
+Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[18] { _ = { dst=2, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[19] { _ = { dst=3, src=2, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[20] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[21] { _ = { dst=3, src=3, param=0, type=C_INC}, comment="", mark="None"}
+Parsed command_ext[22] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="P"}
+Parsed command_ext[23] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[24] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[25] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[26] { _ = { dst=0, src=3, param=84, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[27] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[28] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="HLT"}
+Parsed command_ext[29] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+[parsing.c:730]: Shorted length: 30
+[parsing.c:731]: Marks:
+mark_info_t = { name="_start", cmd_id=12 }
+mark_info_t = { name="P", cmd_id=17 }
+mark_info_t = { name="S", cmd_id=16 }
+mark_info_t = { name="P", cmd_id=24 }
+mark_info_t = { name="L", cmd_id=23 }
+mark_info_t = { name="HLT", cmd_id=28 }
+[linking.c:21]: Allocated 30 bytes (30 objects)
+[linking.c:70]: Last address: 31
+Allocated 48 bytes (6 blocks)
+[preprocessor_stage_3.c:183]: Length: 150, cmd_id: 0
+[preprocessor_stage_3.c:183]: Length: 216, cmd_id: 1
+[preprocessor_stage_3.c:183]: Length: 353, cmd_id: 2
+[preprocessor_stage_3.c:183]: Length: 486, cmd_id: 3
+[preprocessor_stage_3.c:183]: Length: 546, cmd_id: 4
+[preprocessor_stage_3.c:183]: Length: 588, cmd_id: 5
+[preprocessor_stage_3.c:183]: Length: 602, cmd_id: 6
+[preprocessor_stage_3.c:183]: Length: 619, cmd_id: 7
+[preprocessor_stage_3.c:183]: Length: 721, cmd_id: 8
+[preprocessor_stage_3.c:183]: Length: 736, cmd_id: 9
+[preprocessor_stage_3.c:183]: Length: 751, cmd_id: 10
+[preprocessor_stage_3.c:183]: Length: 754, cmd_id: 11
+[preprocessor_stage_3.c:183]: Length: 792, cmd_id: 12
+[preprocessor_stage_3.c:183]: Length: 825, cmd_id: 13
+[preprocessor_stage_3.c:183]: Length: 828, cmd_id: 14
+[preprocessor_stage_3.c:183]: Length: 863, cmd_id: 15
+[preprocessor_stage_3.c:183]: Length: 894, cmd_id: 16
+[preprocessor_stage_3.c:183]: Length: 925, cmd_id: 17
+[preprocessor_stage_3.c:183]: Length: 957, cmd_id: 18
+[preprocessor_stage_3.c:183]: Length: 994, cmd_id: 19
+[preprocessor_stage_3.c:183]: Length: 997, cmd_id: 20
+[preprocessor_stage_3.c:183]: Length: 1030, cmd_id: 21
+[preprocessor_stage_3.c:183]: Length: 1065, cmd_id: 22
+[preprocessor_stage_3.c:183]: Length: 1096, cmd_id: 23
+[preprocessor_stage_3.c:183]: Length: 1127, cmd_id: 24
+[preprocessor_stage_3.c:183]: Length: 1130, cmd_id: 25
+[preprocessor_stage_3.c:183]: Length: 1165, cmd_id: 26
+[preprocessor_stage_3.c:183]: Length: 1168, cmd_id: 27
+[preprocessor_stage_3.c:183]: Length: 1206, cmd_id: 28
+[preprocessor_stage_3.c:183]: Length: 1209, cmd_id: 29
+Succesfully preprocessed!

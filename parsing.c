@@ -3,7 +3,7 @@
 static state_t shorted = {};
 
 typedef struct {
-	word m_cnt, l_cnt, s_cnt, p_cnt, j_cnt;
+	word m_cnt, l_cnt, s_cnt, p_cnt, j_cnt, n_cnt;
 } local_state;
 
 static void shortify (const char** _p) {
@@ -111,10 +111,15 @@ static word from_hex (char c) {
 }
 
 static int parse_number (const char* p, const char** next_p, word* dst) {
+	bool is_neg = false;
+	if (*p == '-') {
+		is_neg = true;
+		++p;
+	}
 	if (p[0] == '0' && p[1] == 'x') {
 		p += 2;
 		if (!is_hex (*p)) {
-			printf ("ERROR: at least 1 hex digit needed:\n\"%s\"\n", p - 2);
+			PANIC ("At least 1 hex digit needed:\n\"%s\"\n", p - 2 - is_neg);
 			return EXIT_FAILURE;
 		}
 		word value = from_hex (*p++);
@@ -122,13 +127,17 @@ static int parse_number (const char* p, const char** next_p, word* dst) {
 			value <<= 4;
 			value += from_hex (*p++);
 		}
+
+		if (is_neg) {
+			value = -value;
+		}
 		*dst = value;
 		*next_p = p;
 		return EXIT_SUCCESS;
 	}
 	//Consider decimal.
 	if (!isdigit (*p)) {
-		printf ("ERROR: at least 1 decimal digit needed:\n\"%s\"\n", p);
+		PANIC ("At least 1 decimal digit needed:\n\"%s\"\n", p - is_neg);
 		return EXIT_FAILURE;
 	}
 	word value = *p - '0';
@@ -141,12 +150,16 @@ static int parse_number (const char* p, const char** next_p, word* dst) {
 			tmp *= 10;
 			tmp += (*p++) - '0';
 			if (tmp > 0xFF) {
-				printf ("ERROR: number overflow (%u)\n\"%s\"\n", tmp, p - 3);
+				PANIC ("Number overflow (%u)\n\"%s\"\n", tmp, p - 3);
 				return EXIT_FAILURE;
 			}
 			value = tmp;
 		}
 	}
+	if (is_neg) {
+		value = -value;
+	}
+
 	*dst = value;
 	*next_p = p;
 	return EXIT_SUCCESS;
@@ -164,7 +177,7 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 		return parse_number (p, next_p, &ent->number);
 	}
 	++p;
-	if (isdigit (*p)) {
+	if (isdigit (*p) || *p == '-') {
 		//It's address.
 		ent->_type = E_ADDR;
 		return parse_number (p, next_p, &ent->address);
@@ -178,22 +191,24 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 		} while (is_valid (*p));
 		const unsigned mark_len = p - name;
 		word m_id = 0;
-		if (mark_len == 1 && *name == ADDR) {
+		if (mark_len == 1 && (*name == ADDR || *name == NEXT)) {
 			if (!extended_mode) {
-				printf ("ERROR: address marks are not supported!\n\"%s\"\n", p - 1);
+				PANIC ("Extended marks are not supported!\n\"%s\"\n", p - 1);
 				return EXIT_FAILURE;
 			}
 			if (st->m_cnt >= prog->m_count) {
-				printf ("ERROR: too many marks\n\"%s\"\n", p - 1);
+				PANIC ("Too many marks\n\"%s\"\n", p - 1);
 				return EXIT_FAILURE;
 			}
 			parsed_ext_t* _prog = (parsed_ext_t*) prog;
-			if (_prog->p_marks[st->p_cnt]) {
-				printf ("ERROR: p_mark declared twice\n\"%s\"\n", p - 1);
+			const bool is_p = *name == ADDR;
+			word* mark = (is_p ? (_prog->p_marks + st->p_cnt) : (_prog->n_marks + st->n_cnt));
+			if (*mark) {
+				PANIC ("%c_mark declared twice\n\"%s\"\n", is_p ? 'p' : 'n', p - 1);
 				return EXIT_FAILURE;
 			}
 			if (st->m_cnt == 0) {
-				printf ("ERROR: p_mark shouldn't be mark #1\n\"%s\"\n", p - 1);
+				PANIC ("%c_mark shouldn't be mark #1\n\"%s\"\n", is_p ? 'p' : 'n', p - 1);
 				return EXIT_FAILURE;
 			}
 			m_id = st->m_cnt;
@@ -203,10 +218,10 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 			info->mark_len = 1;
 			info->cmd_id = prog->cmd_count;
 			
-			_prog->p_marks[st->p_cnt] = m_id;
+			*mark = m_id;
 			++st->m_cnt;
 		} else if (mark_len == 1 && (*name == LOAD || *name == STORE || *name == JUMP)) {
-			printf ("ERROR: used special mark (that shouldn't be used at all!)\n\"%s\")", p - 1);
+			PANIC ("Used special mark (that shouldn't be used at all!)\n\"%s\")", p - 1);
 			return EXIT_FAILURE;
 		} else {
 			m_id = st->m_cnt;
@@ -218,7 +233,7 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 			}
 			if (m_id == st->m_cnt) {
 				if (m_id >= prog->m_count) {
-					printf ("ERROR: too many marks\n\"%s\"\n", p - 1);
+					PANIC ("Too many marks\n\"%s\"\n", p - 1);
 					return EXIT_FAILURE;
 				}
 				mark_info_t* info = prog->marks + m_id;
@@ -232,7 +247,7 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 		*next_p = p;
 		return EXIT_SUCCESS;
 	}
-	printf ("Unknown entity:\n\"%s\"\n", p - 1);
+	PANIC ("Unknown entity:\n\"%s\"\n", p - 1);
 	return EXIT_FAILURE;
 }
 
@@ -240,7 +255,7 @@ static int parse_entity (const char* p, const char** next_p, entity_t* ent, pars
 static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st, unsigned _id, const char** _loc) {
 	const char* loc = *_loc;
 	if (*loc == MARK_DEF) {
-		printf ("ERROR: Empty mark\n\"%s\"\n", loc);
+		PANIC ("Empty mark\n\"%s\"\n", loc);
 		return EXIT_FAILURE;
 	}
 	const char* ptr = NULL;
@@ -248,11 +263,11 @@ static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st
 	if (!isdigit (loc[0]) && is_valid (loc[0]) && (!maybe_register (loc, &ptr, &_reg) || is_valid (*ptr) || *ptr == MARK_DEF)) {
 		//It should be mark name + ':' (MARK_DEF)
 		if ((loc[0] == LOAD || loc[0] == STORE) && loc[1] == MARK_DEF) {
-			printf ("ERROR: Illegal usage of parametric mark\n\"%s\"\n", loc);
+			PANIC ("Illegal usage of parametric mark\n\"%s\"\n", loc);
 			return EXIT_FAILURE;
 		}
-		if ((loc[0] == JUMP || loc[0] == ADDR) && loc[1] == ARG_OPEN) {
-			printf ("ERROR: Illegal usage of non-parametric mark\n\"%s\"\n", loc);
+		if ((loc[0] == JUMP || loc[0] == ADDR || loc[0] == NEXT) && loc[1] == ARG_OPEN) {
+			PANIC ("Illegal usage of non-parametric mark\n\"%s\"\n", loc);
 			return EXIT_FAILURE;
 		}
 		const word m_id = st->m_cnt;
@@ -263,15 +278,19 @@ static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st
 		if ((loc[0] == LOAD || loc[0] == STORE) && loc[1] == ARG_OPEN) {
 			const char* ptr2 = NULL;
 			if (!extended_mode) {
-				printf ("ERROR: Parametric mark used not in extended mode\n\"%s\"\n", loc);
+				PANIC ("Parametric mark used not in extended mode\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			if (!check_common_regno (loc + 2, &ptr2, &_reg)) {
-				printf ("ERROR: Invalid register number\n\"%s\"\n", loc);
+				PANIC ("Invalid register number\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			if (*ptr2 != ARG_CLOSE) {
-				printf ("ERROR: Invalid mark closing\n\"%s\"\n", loc);
+				PANIC ("Invalid mark closing\n\"%s\"\n", loc);
+				return EXIT_FAILURE;
+			}
+			if (m_id >= prog->m_count) {
+				PANIC ("Too many marks:\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			parsed_ext_t* _prog = (parsed_ext_t*) prog;
@@ -291,32 +310,40 @@ static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st
 			}
 			loc = ptr2 + 1;//ptr2+1 - :
 			++loc;//ptr2 + 2 - next
-		} else if (loc[0] == ADDR && loc[1] == MARK_DEF) {
+		} else if ((loc[0] == ADDR || loc[0] == NEXT) && loc[1] == MARK_DEF) {
 			if (!extended_mode) {
-				printf ("ERROR: address mark used not in extended mode\n\"%s\"\n", loc);
+				PANIC ("Reference mark used not in extended mode\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			parsed_ext_t* _prog = (parsed_ext_t*) prog;
 			//Address mark should be used BEFORE!
-			const word mark_id = _prog->p_marks[st->p_cnt];
+			const word mark_id = (loc[0] == ADDR ? _prog->p_marks[st->p_cnt] : _prog->n_marks[st->n_cnt]);
 
-			if (prog->marks[mark_id].mark_len != 1 || prog->marks[mark_id].name[0] != ADDR) {
-				printf ("ERROR: address mark defined before actual usage\n\"%s\"\n", loc);
+			if (prog->marks[mark_id].mark_len != 1 || prog->marks[mark_id].name[0] != loc[0]) {
+				PANIC ("Reference mark defined before actual usage\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			if (prog->marks[mark_id].cmd_id != prog->cmd_count) {
-				printf ("ERROR: address mark is broken!\n\"%s\"\n", loc);
+				PANIC ("Reference mark is broken!\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			info = prog->marks + mark_id;
 			info->name = loc;
 			info->mark_len = 1;
 
-			++st->p_cnt;
+			if (loc[0] == ADDR) {
+				++st->p_cnt;
+			} else {
+				++st->n_cnt;
+			}
 			loc = loc + 2;
 		} else if (loc[0] == JUMP && loc[1] == MARK_DEF) {
 			if (!extended_mode) {
-				printf ("ERROR: jump mark used not in extended mode\n\"%s\"\n", loc);
+				PANIC ("Jump mark used not in extended mode\n\"%s\"\n", loc);
+				return EXIT_FAILURE;
+			}
+			if (m_id >= prog->m_count) {
+				PANIC ("Too many marks:\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			parsed_ext_t* _prog = (parsed_ext_t*) prog;
@@ -338,7 +365,7 @@ static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st
 				++name_len;
 			}
 			if (name[name_len] != MARK_DEF) {
-				printf ("ERROR: invalid mark definition!\n\"%s\"\n", loc);
+				PANIC ("Invalid mark definition!\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 			word mark_id = st->m_cnt;
@@ -350,8 +377,12 @@ static int check_start_mark (parsed_t *prog, bool extended_mode, local_state *st
 					break;
 				}
 			}
+			if (!found_any && mark_id >= prog->m_count) {
+				PANIC ("too many marks:\n\"%s\"\n", loc);
+				return EXIT_FAILURE;
+			}
 			if (found_any && prog->marks[mark_id].cmd_id != prog->cmd_count) {
-				printf ("ERROR: mark already defined!\n\"%s\"\n", loc);
+				PANIC ("mark already defined!\n\"%s\"\n", loc);
 				return EXIT_FAILURE;
 			}
 
@@ -393,7 +424,7 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 	}
 	//Shortest: R0<-0
 	if (length < 5) {
-		printf ("ERROR: Not enough length:\n\"%s\"\n", start);
+		PANIC ("Not enough length:\n\"%s\"\n", start);
 		return EXIT_FAILURE;
 	}
 	const char* loc = start;
@@ -405,7 +436,7 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 		return EXIT_FAILURE;
 	}
 	if (loc[0] != SEND_1 || loc[1] != SEND_2) {
-		printf ("ERROR: after 1-st operand should be \"<-\"\n\"%s\"\n", start);
+		PANIC ("after 1-st operand should be \"<-\"\n\"%s\"\n", start);
 		return EXIT_FAILURE;
 	}
 	loc += 2; //<-
@@ -417,16 +448,16 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 		if (regno == RF) {
 			reg_t dst = {}, src = {};
 			if (!check_common_regno_2 (loc, &loc, &dst)) {
-				printf ("ERROR: 2-nd operand of CMP should be common register!\n\"%s\"\n", start);
+				PANIC ("2-nd operand of CMP should be common register!\n\"%s\"\n", start);
 				return EXIT_FAILURE;
 			}
 			if (*loc != CMP_SIGN) {
-				printf ("ERROR: comparation should be like RF <- R0 ~ R1\n\"%s\"\n", start);
+				PANIC ("comparation should be like RF <- R0 ~ R1\n\"%s\"\n", start);
 				return EXIT_FAILURE;
 			}
 			++loc;
 			if (!check_common_regno_2 (loc, &loc, &src)) {
-				printf ("ERROR: 3-rd operand of CMP should be common register!\n\"%s\"\n", start);
+				PANIC ("3-rd operand of CMP should be common register!\n\"%s\"\n", start);
 				return EXIT_FAILURE;
 			}
 			cmd->_.src = src;
@@ -442,12 +473,37 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 		}//2
 		//2nd operand.
 		entity_t ent2 = {};
+		if (*loc == REF_OPEN && regno != RC && regno != RF) {
+			++loc;
+			if (parse_entity (loc, &loc, &ent2, prog, extended_mode, st) == EXIT_FAILURE) {
+				PANIC ("Trace: \"%s\"\n", loc);
+				return EXIT_FAILURE;
+			}
+			if (*loc != REF_CLOSE) {
+				PANIC("After reference should be %c!\n\"%s\"\n", REF_CLOSE, loc);
+				return EXIT_FAILURE;
+			}
+			++loc;
+			cmd->_.dst = regno;
+			cmd->_._type = C_MOV_V;
+			if (ent2._type == E_ADDR) {
+				cmd->_.param = ent2.address;
+			} else if (ent2._type == E_MARK) {
+				cmd->mark_id = ent2.mark_id;
+			} else {
+				PANIC("Invalid reference argument!\"%s\"\n", start);
+				return EXIT_FAILURE;
+			}
+			break;
+		}
+
 		if (parse_entity (loc, &loc, &ent2, prog, extended_mode, st) == EXIT_FAILURE) {
+			PRINT("Trace: \"%s\"\n", loc);
 			return EXIT_FAILURE;
 		}
 		if (regno == RC) {
 			if (ent2._type != E_ADDR && ent2._type != E_MARK) {
-				printf ("ERROR: 2-nd operand of JMP should be address or mark\n\"%s\"\n", start);
+				PANIC ("2-nd operand of JMP should be address or mark\n\"%s\"\n", start);
 				return EXIT_FAILURE;
 			}
 			if (ent2._type == E_ADDR) {
@@ -466,12 +522,12 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 				} else if (*loc == J_ZERO) {
 					cmd->_._type = C_JMP_Z;//6
 				} else {
-					printf ("ERROR: Unknown jump condition:\n\"%s\"\n", start);
+					PANIC ("Unknown jump condition:\n\"%s\"\n", start);
 					return EXIT_FAILURE;
 				}
 				++loc;
 				if (*loc != ARG_CLOSE) {
-					printf ("ERROR: Wrong jump format:\n\"%s\"\n", start);
+					PANIC ("Wrong jump format:\n\"%s\"\n", start);
 					return EXIT_FAILURE;
 				}
 				++loc;
@@ -494,7 +550,7 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 			break;
 		}//8
 		if (ent2.regno == RC || ent2.regno == RF) {
-			printf ("ERROR: 2nd argument shouldn't be RC or RF!\n\"%s\"\n", start);
+			PANIC ("2nd argument shouldn't be RC or RF!\n\"%s\"\n", start);
 			return EXIT_FAILURE;
 		}
 		//E_REGNO
@@ -509,7 +565,7 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 			break;
 		}//10
 		if (ent2.regno != regno) {
-			printf ("ERROR: for arithmetic operations second and first arguments should be equal\n\"%s\"\n", start);
+			PANIC ("for arithmetic operations second and first arguments should be equal\n\"%s\"\n", start);
 			return EXIT_FAILURE;
 		}
 		const char op = *loc;
@@ -521,14 +577,14 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 					)
 				);
 		if (cmd->_._type == C_NONE) {
-			printf ("ERROR: Unknown arithmetic operator %c\n\"%s\"\n", op, start);
+			PANIC ("Unknown arithmetic operator %c\n\"%s\"\n", op, start);
 			return EXIT_FAILURE;
 		}
 		++loc;
 		
 		reg_t src = {};
 		if (!check_common_regno_2 (loc, &loc, &src)) {
-			printf ("ERROR: 3-rd argument should be valid common register\n\"%s\"\n", start);
+			PANIC ("3-rd argument should be valid common register\n\"%s\"\n", start);
 			return EXIT_FAILURE;
 		}
 		cmd->_.src = src;//14
@@ -539,8 +595,8 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 	{
 		reg_t src = {};
 		if (!check_common_regno_2 (loc, &loc, &src)) {
-			printf ("Value: %c\n", *loc);
-			printf ("ERROR: 2-nd operand of STORE should be common register!\n\"%s\"\n", start);
+			PRINT ("Value: %c\n", *loc);
+			PANIC ("2-nd operand of STORE should be common register!\n\"%s\"\n", start);
 			return EXIT_FAILURE;
 		}
 		cmd->_.src = src;
@@ -553,11 +609,11 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 		break;//15
 	}
 	default:
-		printf ("ERROR: first entity should be register, mark or address\n\"%s\"", start);
+		PANIC ("first entity should be register, mark or address\n\"%s\"", start);
 		return EXIT_FAILURE;
 	}
 	if (*loc != COMMENT && *loc != 0) {
-		printf ("ERROR: something unuseful in command\n\"%s\"\n", start);
+		PANIC ("something unuseful in command\n\"%s\"\n", start);
 		return EXIT_FAILURE;
 	}
 
@@ -580,10 +636,10 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 #define ALLOC_END(member, type, count, note) \
 	member = alloc(type, count); \
 	if (member == NULL) { \
-		printf ("Couldn't allocate %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
+		PRINT ("Couldn't allocate %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
 		return EXIT_FAILURE; \
 	} \
-	printf ("Allocated %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
+	PRINT ("Allocated %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
 	memset (member, 0, size_calc(type, count)); 
 	ALLOC_END(prog->commands, command_ext_t, commands, "commands");
 	//2: detect marks
@@ -594,7 +650,7 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 		if (!isdigit (loc[0]) && is_valid (loc[0]) && 
 			(!maybe_register (loc, &ptr, &_reg) || is_valid (*ptr) || *ptr == MARK_DEF)) {
 			if (prog->m_count == 0xFF) {
-				printf ("ERROR: too many marks\n");
+				PANIC ("too many marks\n");
 				return EXIT_FAILURE;
 			}
 			++prog->m_count;
@@ -608,6 +664,8 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 					++prg_ext->p_count;
 				} else if (*p == JUMP && p[1] == MARK_DEF) {
 					++prg_ext->j_count;
+				} else if (*p == NEXT && p[1] == MARK_DEF) {
+					++prg_ext->n_count;
 				}
 			}
 		}
@@ -629,11 +687,14 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 		if (prg_ext->j_count) {
 			ALLOC_END(prg_ext->j_marks, word, prg_ext->j_count, "jumps marks");
 		}
+		if (prg_ext->n_count) {
+			ALLOC_END(prg_ext->n_marks, word, prg_ext->n_count, "nexts marks");
+		}
 	}
 #undef ALLOC_END
 	p = state->buffer;
 	//3: process commands
-	local_state st = {0, 0, 0, 0, 0};
+	local_state st = {0, 0, 0, 0, 0, 0};
 	const word limit = prog->m_count;
 	bool prev_0 = false;
 	unsigned _i = 0;
@@ -647,6 +708,11 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 		}
 		prev_0 = (len == 0);
 		if (check (prog, extended_mode, &st, _i, from, shorted.length - len_old) == EXIT_FAILURE) {
+			PRINT ("Trace: \"%s\"\n", from);
+			for (word i = 0; i < st.m_cnt; ++i) {
+				const mark_info_t* info = prog->marks + i;
+				printf ("mark_info_t = { name=\"%.*s\", cmd_id=%u }\n", info->mark_len, info->name, info->cmd_id);
+			}
 			return EXIT_FAILURE;
 		}
 		const command_ext_t* cmd = prog->commands + _i;
@@ -660,12 +726,12 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 
 		++_i;
 	}
-	prog->cmd_count = _i;
-	printf ("Shorted length: %u\n", _i);
-	printf ("Marks:\n");
+	prog->cmd_real = _i;
+	PRINT ("Shorted length: %u\n", _i);
+	PRINT ("Marks:\n");
 #define M_CHECK(where, type, note) \
 	if (where->type ## _count != st.type ## _cnt) { \
-		printf ("ERROR: found %u" note "marks, should be %u\n", st.type ## _cnt, where->type ##_count); \
+		PANIC ("found %u" note "marks, should be %u\n", st.type ## _cnt, where->type ##_count); \
 		return EXIT_FAILURE; \
 	}
 	M_CHECK(prog, m, " ");
@@ -675,7 +741,9 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 		M_CHECK(_prog, p, " addres ");
 		M_CHECK(_prog, l, " load ");
 		M_CHECK(_prog, s, " store ");
+		M_CHECK(_prog, n, " nexts ");
 	}
+#undef M_CHECK
 	for (word i = 0; i < st.m_cnt; ++i) {
 		const mark_info_t* info = prog->marks + i;
 		printf ("mark_info_t = { name=\"%.*s\", cmd_id=%u }\n", info->mark_len, info->name, info->cmd_id);

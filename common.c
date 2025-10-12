@@ -62,4 +62,7 @@ void data_parsed_ext_free (parsed_ext_t* program) {
 	FREE(program->p_marks);
 	FREE(program->s_marks);
 	FREE(program->j_marks);
+	FREE(program->n_marks);
 }
+
+#undef FREE

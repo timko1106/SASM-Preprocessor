@@ -1,0 +1,524 @@
+To allocate: 768 bytes (32 blocks)
+Macro R argument X
+Add argument: "X", definition: "%0"
+Declared macros R:
+"R%0"
+
+
+
+
+
+Declared macros REG:
+"2"
+
+
+
+
+
+Macro R(2)
+Expanded like:
+"R2"
+Declared macros reg:
+"R2"
+
+
+
+
+
+Declared macros nop:
+"R0 <- R0"
+
+
+
+
+
+Macro push argument DST
+Add argument: "DST", definition: "%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Declared macros push:
+"@N <- R03 ; PUSH R%0 
+N: @0 <- R%0 
+R%0 <- 1 
+R03 <- R03 - R%0"
+
+
+
+
+
+Macro pop argument SRC
+Add argument: "SRC", definition: "%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Macro R(%0)
+Expanded like:
+"R%0"
+Declared macros pop:
+"R03 <- R03++ ; POP R%0 
+@N <- R03 
+N: R%0 <- @0 
+"
+
+
+
+
+
+Macro call_extreme argument "name"
+Macro call_extreme argument _2
+Add argument: "name", definition: "%0"
+Add argument: "_2", definition: "%1"
+Macro push(0)
+Expanded like:
+"@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0"
+Declared macros call_extreme:
+" ; Не сохранять регистры 
+R0 <- [@_%1] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @%0 
+_%1: R0 <- R0"
+
+
+
+
+
+Macro call_short argument "name"
+Macro call_short argument _2
+Add argument: "name", definition: "%0"
+Add argument: "_2", definition: "%1"
+Macro push(0)
+Expanded like:
+"@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0"
+Macro push(0)
+Expanded like:
+"@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0"
+Macro pop(0)
+Expanded like:
+"R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+"
+Declared macros call_short:
+" ; Сохранить только регистр R0 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+R0 <- [@_%1] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @%0 
+_%1: R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+"
+
+
+
+
+
+Macro ret argument name
+Add argument: "name", definition: "%0"
+Declared macros ret:
+"ret_%0"
+
+
+
+
+
+Macro func argument name
+Add argument: "name", definition: "%0"
+Macro ret(%0)
+Expanded like:
+"ret_%0"
+Declared macros func:
+" 
+ret_%0: R0 <- R0 
+; FUNCTION %0
+%0: R0 <- R0"
+
+
+
+
+
+Macro pop(0)
+Expanded like:
+"R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+"
+Declared macros exit:
+"R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+ 
+;EXIT 
+@N <- R0 
+N: RC <- @0"
+
+
+
+
+
+Macro rsp
+Macro rsp
+Macro rsp
+Macro nop
+Macro func(fibbonaci)
+Expanded like:
+" 
+ret_fibbonaci: R0 <- R0 
+; FUNCTION fibbonaci
+fibbonaci: R0 <- R0"
+Macro call_short(fibbonaci,fib_1)
+Expanded like:
+" ; Сохранить только регистр R0 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+R0 <- [@_fib_1] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_fib_1: R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+"
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+Macro call_short(fibbonaci,fib_2)
+Expanded like:
+" ; Сохранить только регистр R0 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+R0 <- [@_fib_2] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_fib_2: R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+"
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+Macro exit
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+Macro exit
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+Macro exit
+Macro nop
+Macro call_extreme(fibbonaci,start_fib)
+Expanded like:
+" ; Не сохранять регистры 
+R0 <- [@_start_fib] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_start_fib: R0 <- R0"
+Macro ret(fibbonaci)
+Expanded like:
+"ret_fibbonaci"
+[parsing.c:644]: Allocated 2928 bytes for commands (122 objects)
+[parsing.c:675]: Allocated 600 bytes for marks (25 objects)
+[parsing.c:691]: Allocated 13 bytes for nexts marks (13 objects)
+Parsed command_ext[0] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[1] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
+Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
+Parsed command_ext[3] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Поэтому для пробрасывания значения в стек будет использован "костыль"", mark="None"}
+Parsed command_ext[4] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" (сейчас для примера регистр R2):", mark="None"}
+Parsed command_ext[5] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) write R2 по назначению", mark="None"}
+Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) R2 = 1", mark="None"}
+Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 3) R03 -= R2", mark="None"}
+Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Для взятия из стека нужен следующий метод (регистр R2):", mark="None"}
+Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) inc R03", mark="None"}
+Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) read R2", mark="None"}
+Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" place to save argument", mark="None"}
+Parsed command_ext[13] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" n - N; fib(n<3)=1", mark="None"}
+Parsed command_ext[15] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" FUNCTION fibbonaci", mark="None"}
+Parsed command_ext[18] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[19] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="Прочитать аргумент", mark="var1"}
+Parsed command_ext[20] { _ = { dst=1, src=0, param=3, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[21] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment="", mark="None"}
+Parsed command_ext[22] { _ = { dst=0, src=0, param=0, type=C_JMP_S}, comment=" Если < 3 - короткий путь", mark="fib_fast"}
+Parsed command_ext[23] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment="", mark="None"}
+Parsed command_ext[24] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment=" Если 3 - ответ 2", mark="fib_3"}
+Parsed command_ext[25] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment="fib(n)=fib(n-1)+fib(n-2). n хранить в R0, поэтому R0 сохранить ОБЯЗАНЫ.", mark="None"}
+Parsed command_ext[26] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[27] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="var1"}
+Parsed command_ext[28] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Сохранить только регистр R0 ", mark="None"}
+Parsed command_ext[29] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment=" PUSH R0 ", mark="N"}
+Parsed command_ext[30] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[31] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[32] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[33] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment="", mark="_fib_1"}
+Parsed command_ext[34] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment=" PUSH R0 ", mark="N"}
+Parsed command_ext[35] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[36] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[37] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[38] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="fibbonaci"}
+Parsed command_ext[39] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" POP R0 ", mark="None"}
+Parsed command_ext[40] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[41] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="None"}
+Parsed command_ext[42] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[43] { _ = { dst=2, src=0, param=0, type=C_LOAD}, comment=" R2=fib(n-1)", mark="ret_fibbonaci"}
+Parsed command_ext[44] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[45] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment=" n-2", mark="None"}
+Parsed command_ext[46] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="var1"}
+Parsed command_ext[47] { _ = { dst=0, src=2, param=0, type=C_MOV}, comment=" теперь можно сохранять только R0", mark="None"}
+Parsed command_ext[48] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Сохранить только регистр R0 ", mark="None"}
+Parsed command_ext[49] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment=" PUSH R0 ", mark="N"}
+Parsed command_ext[50] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[51] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[52] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[53] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment="", mark="_fib_2"}
+Parsed command_ext[54] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment=" PUSH R0 ", mark="N"}
+Parsed command_ext[55] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[56] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[57] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[58] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="fibbonaci"}
+Parsed command_ext[59] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" POP R0 ", mark="None"}
+Parsed command_ext[60] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[61] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="None"}
+Parsed command_ext[62] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[63] { _ = { dst=2, src=0, param=0, type=C_LOAD}, comment=" R0=fib(n-2)", mark="ret_fibbonaci"}
+Parsed command_ext[64] { _ = { dst=2, src=0, param=0, type=C_ADD}, comment="", mark="None"}
+Parsed command_ext[65] { _ = { dst=0, src=2, param=0, type=C_STORE}, comment="", mark="ret_fibbonaci"}
+Parsed command_ext[66] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" POP R0 ", mark="None"}
+Parsed command_ext[67] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[68] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="None"}
+Parsed command_ext[69] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[70] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[71] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[72] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="None"}
+Parsed command_ext[73] { _ = { dst=0, src=0, param=2, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[74] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="ret_fibbonaci"}
+Parsed command_ext[75] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" POP R0 ", mark="None"}
+Parsed command_ext[76] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[77] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="None"}
+Parsed command_ext[78] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[79] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[80] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[81] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="None"}
+Parsed command_ext[82] { _ = { dst=1, src=0, param=0, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[83] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment="", mark="None"}
+Parsed command_ext[84] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment="", mark="fib_zero"}
+Parsed command_ext[85] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[86] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="exit1"}
+Parsed command_ext[87] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[88] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="ret_fibbonaci"}
+Parsed command_ext[89] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" POP R0 ", mark="None"}
+Parsed command_ext[90] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[91] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="None"}
+Parsed command_ext[92] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[93] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[94] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="N"}
+Parsed command_ext[95] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="None"}
+Parsed command_ext[96] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[97] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[98] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[99] { _ = { dst=0, src=0, param=10, type=C_MOV_V}, comment=" fibbonaci(10)", mark="None"}
+Parsed command_ext[100] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="var1"}
+Parsed command_ext[101] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Не сохранять регистры ", mark="None"}
+Parsed command_ext[102] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment="", mark="_start_fib"}
+Parsed command_ext[103] { _ = { dst=0, src=3, param=0, type=C_STORE}, comment=" PUSH R0 ", mark="N"}
+Parsed command_ext[104] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[105] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment="", mark="None"}
+Parsed command_ext[106] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment="", mark="None"}
+Parsed command_ext[107] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="fibbonaci"}
+Parsed command_ext[108] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
+Parsed command_ext[109] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment="", mark="ret_fibbonaci"}
+Parsed command_ext[110] { _ = { dst=0, src=0, param=207, type=C_STORE}, comment="", mark="None"}
+Parsed command_ext[111] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[112] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="HLT"}
+Parsed command_ext[113] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+[parsing.c:730]: Shorted length: 114
+[parsing.c:731]: Marks:
+mark_info_t = { name="var1", cmd_id=13 }
+mark_info_t = { name="ret_fibbonaci", cmd_id=16 }
+mark_info_t = { name="fibbonaci", cmd_id=18 }
+mark_info_t = { name="fib_fast", cmd_id=82 }
+mark_info_t = { name="fib_3", cmd_id=73 }
+mark_info_t = { name="N", cmd_id=30 }
+mark_info_t = { name="_fib_1", cmd_id=39 }
+mark_info_t = { name="N", cmd_id=35 }
+mark_info_t = { name="N", cmd_id=41 }
+mark_info_t = { name="N", cmd_id=50 }
+mark_info_t = { name="_fib_2", cmd_id=59 }
+mark_info_t = { name="N", cmd_id=55 }
+mark_info_t = { name="N", cmd_id=61 }
+mark_info_t = { name="N", cmd_id=68 }
+mark_info_t = { name="N", cmd_id=72 }
+mark_info_t = { name="N", cmd_id=77 }
+mark_info_t = { name="N", cmd_id=81 }
+mark_info_t = { name="fib_zero", cmd_id=87 }
+mark_info_t = { name="exit1", cmd_id=88 }
+mark_info_t = { name="N", cmd_id=91 }
+mark_info_t = { name="N", cmd_id=95 }
+mark_info_t = { name="_start", cmd_id=97 }
+mark_info_t = { name="_start_fib", cmd_id=108 }
+mark_info_t = { name="N", cmd_id=104 }
+mark_info_t = { name="HLT", cmd_id=112 }
+[linking.c:21]: Allocated 114 bytes (114 objects)
+[linking.c:70]: Last address: 148
+Allocated 200 bytes (25 blocks)
+[preprocessor_stage_3.c:183]: Length: 41, cmd_id: 0
+[preprocessor_stage_3.c:183]: Length: 107, cmd_id: 1
+[preprocessor_stage_3.c:183]: Length: 244, cmd_id: 2
+[preprocessor_stage_3.c:183]: Length: 377, cmd_id: 3
+[preprocessor_stage_3.c:183]: Length: 437, cmd_id: 4
+[preprocessor_stage_3.c:183]: Length: 479, cmd_id: 5
+[preprocessor_stage_3.c:183]: Length: 493, cmd_id: 6
+[preprocessor_stage_3.c:183]: Length: 510, cmd_id: 7
+[preprocessor_stage_3.c:183]: Length: 612, cmd_id: 8
+[preprocessor_stage_3.c:183]: Length: 627, cmd_id: 9
+[preprocessor_stage_3.c:183]: Length: 642, cmd_id: 10
+[preprocessor_stage_3.c:183]: Length: 645, cmd_id: 11
+[preprocessor_stage_3.c:183]: Length: 672, cmd_id: 12
+[preprocessor_stage_3.c:183]: Length: 707, cmd_id: 13
+[preprocessor_stage_3.c:183]: Length: 729, cmd_id: 14
+[preprocessor_stage_3.c:183]: Length: 732, cmd_id: 15
+[preprocessor_stage_3.c:183]: Length: 776, cmd_id: 16
+[preprocessor_stage_3.c:183]: Length: 799, cmd_id: 17
+[preprocessor_stage_3.c:183]: Length: 839, cmd_id: 18
+[preprocessor_stage_3.c:183]: Length: 906, cmd_id: 19
+[preprocessor_stage_3.c:183]: Length: 937, cmd_id: 20
+[preprocessor_stage_3.c:183]: Length: 973, cmd_id: 21
+[preprocessor_stage_3.c:183]: Length: 1056, cmd_id: 22
+[preprocessor_stage_3.c:183]: Length: 1092, cmd_id: 23
+[preprocessor_stage_3.c:183]: Length: 1157, cmd_id: 24
+[preprocessor_stage_3.c:183]: Length: 1291, cmd_id: 25
+[preprocessor_stage_3.c:183]: Length: 1328, cmd_id: 26
+[preprocessor_stage_3.c:183]: Length: 1362, cmd_id: 27
+[preprocessor_stage_3.c:183]: Length: 1417, cmd_id: 28
+[preprocessor_stage_3.c:183]: Length: 1461, cmd_id: 29
+[preprocessor_stage_3.c:183]: Length: 1495, cmd_id: 30
+[preprocessor_stage_3.c:183]: Length: 1527, cmd_id: 31
+[preprocessor_stage_3.c:183]: Length: 1564, cmd_id: 32
+[preprocessor_stage_3.c:183]: Length: 1597, cmd_id: 33
+[preprocessor_stage_3.c:183]: Length: 1641, cmd_id: 34
+[preprocessor_stage_3.c:183]: Length: 1675, cmd_id: 35
+[preprocessor_stage_3.c:183]: Length: 1707, cmd_id: 36
+[preprocessor_stage_3.c:183]: Length: 1744, cmd_id: 37
+[preprocessor_stage_3.c:183]: Length: 1784, cmd_id: 38
+[preprocessor_stage_3.c:183]: Length: 1832, cmd_id: 39
+[preprocessor_stage_3.c:183]: Length: 1867, cmd_id: 40
+[preprocessor_stage_3.c:183]: Length: 1901, cmd_id: 41
+[preprocessor_stage_3.c:183]: Length: 1904, cmd_id: 42
+[preprocessor_stage_3.c:183]: Length: 1950, cmd_id: 43
+[preprocessor_stage_3.c:183]: Length: 1982, cmd_id: 44
+[preprocessor_stage_3.c:183]: Length: 2023, cmd_id: 45
+[preprocessor_stage_3.c:183]: Length: 2057, cmd_id: 46
+[preprocessor_stage_3.c:183]: Length: 2147, cmd_id: 47
+[preprocessor_stage_3.c:183]: Length: 2202, cmd_id: 48
+[preprocessor_stage_3.c:183]: Length: 2246, cmd_id: 49
+[preprocessor_stage_3.c:183]: Length: 2280, cmd_id: 50
+[preprocessor_stage_3.c:183]: Length: 2312, cmd_id: 51
+[preprocessor_stage_3.c:183]: Length: 2349, cmd_id: 52
+[preprocessor_stage_3.c:183]: Length: 2382, cmd_id: 53
+[preprocessor_stage_3.c:183]: Length: 2426, cmd_id: 54
+[preprocessor_stage_3.c:183]: Length: 2460, cmd_id: 55
+[preprocessor_stage_3.c:183]: Length: 2492, cmd_id: 56
+[preprocessor_stage_3.c:183]: Length: 2529, cmd_id: 57
+[preprocessor_stage_3.c:183]: Length: 2569, cmd_id: 58
+[preprocessor_stage_3.c:183]: Length: 2617, cmd_id: 59
+[preprocessor_stage_3.c:183]: Length: 2652, cmd_id: 60
+[preprocessor_stage_3.c:183]: Length: 2686, cmd_id: 61
+[preprocessor_stage_3.c:183]: Length: 2689, cmd_id: 62
+[preprocessor_stage_3.c:183]: Length: 2735, cmd_id: 63
+[preprocessor_stage_3.c:183]: Length: 2772, cmd_id: 64
+[preprocessor_stage_3.c:183]: Length: 2806, cmd_id: 65
+[preprocessor_stage_3.c:183]: Length: 2847, cmd_id: 66
+[preprocessor_stage_3.c:183]: Length: 2882, cmd_id: 67
+[preprocessor_stage_3.c:183]: Length: 2916, cmd_id: 68
+[preprocessor_stage_3.c:183]: Length: 2919, cmd_id: 69
+[preprocessor_stage_3.c:183]: Length: 2928, cmd_id: 70
+[preprocessor_stage_3.c:183]: Length: 2963, cmd_id: 71
+[preprocessor_stage_3.c:183]: Length: 2996, cmd_id: 72
+[preprocessor_stage_3.c:183]: Length: 3034, cmd_id: 73
+[preprocessor_stage_3.c:183]: Length: 3068, cmd_id: 74
+[preprocessor_stage_3.c:183]: Length: 3109, cmd_id: 75
+[preprocessor_stage_3.c:183]: Length: 3144, cmd_id: 76
+[preprocessor_stage_3.c:183]: Length: 3178, cmd_id: 77
+[preprocessor_stage_3.c:183]: Length: 3181, cmd_id: 78
+[preprocessor_stage_3.c:183]: Length: 3190, cmd_id: 79
+[preprocessor_stage_3.c:183]: Length: 3227, cmd_id: 80
+[preprocessor_stage_3.c:183]: Length: 3262, cmd_id: 81
+[preprocessor_stage_3.c:183]: Length: 3305, cmd_id: 82
+[preprocessor_stage_3.c:183]: Length: 3342, cmd_id: 83
+[preprocessor_stage_3.c:183]: Length: 3386, cmd_id: 84
+[preprocessor_stage_3.c:183]: Length: 3420, cmd_id: 85
+[preprocessor_stage_3.c:183]: Length: 3458, cmd_id: 86
+[preprocessor_stage_3.c:183]: Length: 3501, cmd_id: 87
+[preprocessor_stage_3.c:183]: Length: 3543, cmd_id: 88
+[preprocessor_stage_3.c:183]: Length: 3585, cmd_id: 89
+[preprocessor_stage_3.c:183]: Length: 3623, cmd_id: 90
+[preprocessor_stage_3.c:183]: Length: 3659, cmd_id: 91
+[preprocessor_stage_3.c:183]: Length: 3662, cmd_id: 92
+[preprocessor_stage_3.c:183]: Length: 3671, cmd_id: 93
+[preprocessor_stage_3.c:183]: Length: 3709, cmd_id: 94
+[preprocessor_stage_3.c:183]: Length: 3744, cmd_id: 95
+[preprocessor_stage_3.c:183]: Length: 3747, cmd_id: 96
+[preprocessor_stage_3.c:183]: Length: 3786, cmd_id: 97
+[preprocessor_stage_3.c:183]: Length: 3789, cmd_id: 98
+[preprocessor_stage_3.c:183]: Length: 3838, cmd_id: 99
+[preprocessor_stage_3.c:183]: Length: 3875, cmd_id: 100
+[preprocessor_stage_3.c:183]: Length: 3921, cmd_id: 101
+[preprocessor_stage_3.c:183]: Length: 3958, cmd_id: 102
+[preprocessor_stage_3.c:183]: Length: 4006, cmd_id: 103
+[preprocessor_stage_3.c:183]: Length: 4043, cmd_id: 104
+[preprocessor_stage_3.c:183]: Length: 4078, cmd_id: 105
+[preprocessor_stage_3.c:183]: Length: 4117, cmd_id: 106
+[preprocessor_stage_3.c:183]: Length: 4160, cmd_id: 107
+[preprocessor_stage_3.c:183]: Length: 4204, cmd_id: 108
+[preprocessor_stage_3.c:183]: Length: 4241, cmd_id: 109
+[preprocessor_stage_3.c:183]: Length: 4280, cmd_id: 110
+[preprocessor_stage_3.c:183]: Length: 4283, cmd_id: 111
+[preprocessor_stage_3.c:183]: Length: 4324, cmd_id: 112
+[preprocessor_stage_3.c:183]: Length: 4327, cmd_id: 113
+Succesfully preprocessed!
