@@ -1,29 +1,8 @@
-R03 <- 0xFF ; 0 1
-RC <- @_init ; 2 3
 
 
 
 
 
-; PUSH - 7 bytes
-; DST - number of register.
-; Offsets:
-; Store command address - 2
-; P - offset 3
-
-; POP - 5 bytes
-; SRC - number of register.
-; Offsets:
-; Load command address - 3
-; P - offset 4
-
-; init - 4 bytes
-
-_init: R0 <- 0x22 
-@19 <- R0 ; 4 5 6 7 @addr <- R2
-R0 <- 0x18 
-@27 <- R0 ; 8 9 10 11
-RC <- @_start ; 12 13
 
 ; Пусть регистр R03 отвечает за стек.
 ; Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)
@@ -37,25 +16,20 @@ RC <- @_start ; 12 13
 ; 2) read R2
 
 _start: R0 <- R0
-R2 <- 0x15 ; 15 16
+	R2 <- 0x15
 
-;PUSH 17-23
- 
-@20 <- R03 
-S_0: R0 <- R0 
-P_S_0: R0 <- R0 
+	 
+@P <- R03 
+S(2): R0 <- R0 
+P: R0 <- R0 
 R2 <- 1 
 R03 <- R03 - R2
-
-;POP 24-28
- 
+	 
 R03 <- R03++ 
-@28 <- R03 
-L_1: R0 <- R0 
-P_L_1: R0 <- R0
+@P <- R03 
+L(2): R0 <- R0 
+P: R0 <- R0
 
-@0x54 <- R03 ;29 30
-
-HLT: RC <- @HLT ; 31 32
-
-
+	@0x54 <- R03
+	
+HLT: RC <- @HLT 

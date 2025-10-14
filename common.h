@@ -11,6 +11,18 @@
 
 #include <ctype.h>
 
+#define PRINT(text, ...) printf ("["__FILE__":%d]: " text, __LINE__, ##__VA_ARGS__)
+#define PANIC(text, ...) printf ("ERROR[" __FILE__ ":%d]: " text, __LINE__, ##__VA_ARGS__)
+
+//Debug print:
+#ifdef DEBUG
+
+#define PRINT_D(text, ...) printf ("["__FILE__":%d]: " text, __LINE__, ##__VA_ARGS__)
+
+#else
+#define PRINT_D(text, ...)
+#endif
+
 
 //VAL1 <- VAL2 ...
 #define SEND_1 '<'
@@ -23,6 +35,9 @@
 #define COMMENT ';'
 
 #define REGISTERS 4
+
+#define REF_OPEN '['
+#define REF_CLOSE ']'
 
 //binary register encoding NOT SUPPORTED!
 
@@ -55,8 +70,10 @@
 //All marks J - unconditional jump
 #define JUMP 'J'
 
-//All marks P - addresses to write register to
+//All marks P - addresses to commands
 #define ADDR 'P'
+//All marks N - addresses to next byte after first byte of command
+#define NEXT 'N'
 
 typedef uint8_t word;
 
@@ -79,9 +96,9 @@ typedef enum : word {
 	C_NONE 	= 15
 } cmd_t;//C_NONE can be used as just comment.
 
-extern uint8_t sizes[16];
+extern const uint8_t sizes[16];
 
-extern const char* cmd_names[16];
+extern const char* const cmd_names[16];
 
 typedef struct {
 	cmd_t _type;
@@ -104,7 +121,7 @@ typedef struct {
 } mark_info_t;
 
 typedef struct {
-	unsigned cmd_count;
+	unsigned cmd_count, cmd_real;
 	command_ext_t* commands;
 	mark_info_t* marks;
 	word m_count;
@@ -117,30 +134,38 @@ typedef struct {
 
 typedef struct {
 	parsed_t _;
-	//Loads, Stores and Addresses count
-	word l_count, s_count, p_count, j_count;
+	//Loads, Stores, Addresses, Jumps and Nexts count
+	word l_count, s_count, p_count, j_count, n_count;
 	mark_param_t *l_marks, *s_marks;
-	word *p_marks, *j_marks;
+	word *p_marks, *j_marks, *n_marks;
 } parsed_ext_t;
 
-//4KB хватит всем
-#define LIMIT 4096
+//8KB хватит всем
+//4KB внезапно не хватило (из-за комментариев)
+#define LIMIT 8192
 
 typedef struct {
 	char buffer[LIMIT];
 	size_t length;
 } state_t;
 
+//[_0-9A-Za-z]
 bool is_valid (char);
 
+//Memcpy with check size=0
 void memcpy_s (char* dst, const char* src, size_t size);
 
+//Doesn't call free(program)! Should be on stack!
 void data_parsed_free (parsed_t* program);
 void data_parsed_ext_free (parsed_ext_t* program);
 
 //extended -> allocated as parsed_ext_t, else as parsed_t.
 //Проходов будет много. ОЧЕНЬ МНОГО.
 int parse (state_t* state, parsed_t* program, bool extended_mode);
+
+//linker - all marks should get their addresses (in final program).
+//Commands get addresses of marks.
+int linker (parsed_t* program, word offset);
 
 #define size_calc(type, count) (sizeof(type) * ((size_t)(count)) )
 #define alloc(type, count) (type*) malloc(size_calc (type, count))

@@ -27,7 +27,7 @@
 
 
 
-int preprocess (state_t* state, int fd_out);
+int preprocess (state_t* state, int fd_1, int fd_2);
 
 //Stage 1: macro expanding
 //Also adds line #rsp R03
@@ -35,6 +35,6 @@ int stage_1 (state_t* state, state_t* state_new);
 //State 2: compilation, marks indexing
 int stage_2 (state_t* state, parsed_ext_t* prog);
 //Stage 3: marks setting for MOV-es, final output
-int stage_3 (state_t* state, state_t* state_new, parsed_ext_t* prog);
+int stage_3 (state_t* state_new, parsed_ext_t* prog);
 
 #endif

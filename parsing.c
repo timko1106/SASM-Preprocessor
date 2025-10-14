@@ -636,7 +636,7 @@ int parse (state_t* state, parsed_t* prog, bool extended_mode) {
 #define ALLOC_END(member, type, count, note) \
 	member = alloc(type, count); \
 	if (member == NULL) { \
-		PRINT ("Couldn't allocate %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
+		PANIC ("Couldn't allocate %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \
 		return EXIT_FAILURE; \
 	} \
 	PRINT ("Allocated %lu bytes for " note " (%u objects)\n", size_calc(type, count), count); \

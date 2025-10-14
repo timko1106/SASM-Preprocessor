@@ -1,52 +1,37 @@
-To allocate: 768 bytes (32 blocks)
-Macro R argument X
-Add argument: "X", definition: "%0"
-Declared macros R:
+[preprocessor_stage_1.c:361]: To allocate: 768 bytes (32 blocks)
+[preprocessor_stage_1.c:289]: Macro R argument X
+[preprocessor_stage_1.c:314]: Add argument: "X", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros R:
 "R%0"
 
 
 
 
 
-Declared macros REG:
+[preprocessor_stage_1.c:339]: Declared macros REG:
 "2"
 
 
 
 
 
-Macro R(2)
-Expanded like:
-"R2"
-Declared macros reg:
+[preprocessor_stage_1.c:339]: Declared macros reg:
 "R2"
 
 
 
 
 
-Declared macros nop:
+[preprocessor_stage_1.c:339]: Declared macros nop:
 "R0 <- R0"
 
 
 
 
 
-Macro push argument DST
-Add argument: "DST", definition: "%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Declared macros push:
+[preprocessor_stage_1.c:289]: Macro push argument DST
+[preprocessor_stage_1.c:314]: Add argument: "DST", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros push:
 "@N <- R03 ; PUSH R%0 
 N: @0 <- R%0 
 R%0 <- 1 
@@ -56,15 +41,9 @@ R03 <- R03 - R%0"
 
 
 
-Macro pop argument SRC
-Add argument: "SRC", definition: "%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Declared macros pop:
+[preprocessor_stage_1.c:289]: Macro pop argument SRC
+[preprocessor_stage_1.c:314]: Add argument: "SRC", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros pop:
 "R03 <- R03++ ; POP R%0 
 @N <- R03 
 N: R%0 <- @0 
@@ -74,17 +53,11 @@ N: R%0 <- @0
 
 
 
-Macro call_extreme argument "name"
-Macro call_extreme argument _2
-Add argument: "name", definition: "%0"
-Add argument: "_2", definition: "%1"
-Macro push(0)
-Expanded like:
-"@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0"
-Declared macros call_extreme:
+[preprocessor_stage_1.c:277]: Macro call_extreme argument "name"
+[preprocessor_stage_1.c:289]: Macro call_extreme argument _2
+[preprocessor_stage_1.c:314]: Add argument: "name", definition: "%0"
+[preprocessor_stage_1.c:314]: Add argument: "_2", definition: "%1"
+[preprocessor_stage_1.c:339]: Declared macros call_extreme:
 " ; Не сохранять регистры 
 R0 <- [@_%1] 
 @N <- R03 ; PUSH R0 
@@ -98,29 +71,11 @@ _%1: R0 <- R0"
 
 
 
-Macro call_short argument "name"
-Macro call_short argument _2
-Add argument: "name", definition: "%0"
-Add argument: "_2", definition: "%1"
-Macro push(0)
-Expanded like:
-"@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0"
-Macro push(0)
-Expanded like:
-"@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0"
-Macro pop(0)
-Expanded like:
-"R03 <- R03++ ; POP R0 
-@N <- R03 
-N: R0 <- @0 
-"
-Declared macros call_short:
+[preprocessor_stage_1.c:277]: Macro call_short argument "name"
+[preprocessor_stage_1.c:289]: Macro call_short argument _2
+[preprocessor_stage_1.c:314]: Add argument: "name", definition: "%0"
+[preprocessor_stage_1.c:314]: Add argument: "_2", definition: "%1"
+[preprocessor_stage_1.c:339]: Declared macros call_short:
 " ; Сохранить только регистр R0 
 @N <- R03 ; PUSH R0 
 N: @0 <- R0 
@@ -141,21 +96,18 @@ N: R0 <- @0
 
 
 
-Macro ret argument name
-Add argument: "name", definition: "%0"
-Declared macros ret:
+[preprocessor_stage_1.c:289]: Macro ret argument name
+[preprocessor_stage_1.c:314]: Add argument: "name", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros ret:
 "ret_%0"
 
 
 
 
 
-Macro func argument name
-Add argument: "name", definition: "%0"
-Macro ret(%0)
-Expanded like:
-"ret_%0"
-Declared macros func:
+[preprocessor_stage_1.c:289]: Macro func argument name
+[preprocessor_stage_1.c:314]: Add argument: "name", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros func:
 " 
 ret_%0: R0 <- R0 
 ; FUNCTION %0
@@ -165,13 +117,7 @@ ret_%0: R0 <- R0
 
 
 
-Macro pop(0)
-Expanded like:
-"R03 <- R03++ ; POP R0 
-@N <- R03 
-N: R0 <- @0 
-"
-Declared macros exit:
+[preprocessor_stage_1.c:339]: Declared macros exit:
 "R03 <- R03++ ; POP R0 
 @N <- R03 
 N: R0 <- @0 
@@ -184,82 +130,6 @@ N: RC <- @0"
 
 
 
-Macro rsp
-Macro rsp
-Macro rsp
-Macro nop
-Macro func(fibbonaci)
-Expanded like:
-" 
-ret_fibbonaci: R0 <- R0 
-; FUNCTION fibbonaci
-fibbonaci: R0 <- R0"
-Macro call_short(fibbonaci,fib_1)
-Expanded like:
-" ; Сохранить только регистр R0 
-@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0 
-R0 <- [@_fib_1] 
-@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0 
-RC <- @fibbonaci 
-_fib_1: R03 <- R03++ ; POP R0 
-@N <- R03 
-N: R0 <- @0 
-"
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
-Macro call_short(fibbonaci,fib_2)
-Expanded like:
-" ; Сохранить только регистр R0 
-@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0 
-R0 <- [@_fib_2] 
-@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0 
-RC <- @fibbonaci 
-_fib_2: R03 <- R03++ ; POP R0 
-@N <- R03 
-N: R0 <- @0 
-"
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
-Macro exit
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
-Macro exit
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
-Macro exit
-Macro nop
-Macro call_extreme(fibbonaci,start_fib)
-Expanded like:
-" ; Не сохранять регистры 
-R0 <- [@_start_fib] 
-@N <- R03 ; PUSH R0 
-N: @0 <- R0 
-R0 <- 1 
-R03 <- R03 - R0 
-RC <- @fibbonaci 
-_start_fib: R0 <- R0"
-Macro ret(fibbonaci)
-Expanded like:
-"ret_fibbonaci"
 [parsing.c:644]: Allocated 2928 bytes for commands (122 objects)
 [parsing.c:675]: Allocated 600 bytes for marks (25 objects)
 [parsing.c:691]: Allocated 13 bytes for nexts marks (13 objects)
@@ -404,9 +274,9 @@ mark_info_t = { name="_start", cmd_id=97 }
 mark_info_t = { name="_start_fib", cmd_id=108 }
 mark_info_t = { name="N", cmd_id=104 }
 mark_info_t = { name="HLT", cmd_id=112 }
-[linking.c:21]: Allocated 114 bytes (114 objects)
-[linking.c:70]: Last address: 148
-Allocated 200 bytes (25 blocks)
+[linking.c:23]: Allocated 114 bytes (114 objects)
+[linking.c:75]: Size: 148
+[preprocessor_stage_3.c:32]: Allocated 200 bytes (25 blocks)
 [preprocessor_stage_3.c:183]: Length: 41, cmd_id: 0
 [preprocessor_stage_3.c:183]: Length: 107, cmd_id: 1
 [preprocessor_stage_3.c:183]: Length: 244, cmd_id: 2
@@ -521,4 +391,4 @@ Allocated 200 bytes (25 blocks)
 [preprocessor_stage_3.c:183]: Length: 4283, cmd_id: 111
 [preprocessor_stage_3.c:183]: Length: 4324, cmd_id: 112
 [preprocessor_stage_3.c:183]: Length: 4327, cmd_id: 113
-Succesfully preprocessed!
+[preprocessor.c:34]: Succesfully preprocessed!

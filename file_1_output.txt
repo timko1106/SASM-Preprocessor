@@ -1,46 +1,37 @@
-To allocate: 648 bytes (27 blocks)
-Macro R argument K
-Add argument: "K", definition: "%0"
-Declared macros R:
+[preprocessor_stage_1.c:361]: To allocate: 648 bytes (27 blocks)
+[preprocessor_stage_1.c:289]: Macro R argument K
+[preprocessor_stage_1.c:314]: Add argument: "K", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros R:
 "R%0"
 
 
 
 
 
-Declared macros REG:
+[preprocessor_stage_1.c:339]: Declared macros REG:
 "2"
 
 
 
 
 
-Macro R(2)
-Expanded like:
-"R2"
-Declared macros reg:
+[preprocessor_stage_1.c:339]: Declared macros reg:
 "R2"
 
 
 
 
 
-Declared macros nop:
+[preprocessor_stage_1.c:339]: Declared macros nop:
 "R0 <- R0"
 
 
 
 
 
-Macro push argument DST
-Add argument: "DST", definition: "%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Macro R(%0)
-Expanded like:
-"R%0"
-Declared macros push:
+[preprocessor_stage_1.c:289]: Macro push argument DST
+[preprocessor_stage_1.c:314]: Add argument: "DST", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros push:
 " 
 @P <- R03 
 S(%0): R0 <- R0 
@@ -52,9 +43,9 @@ R03 <- R03 - R%0"
 
 
 
-Macro pop argument SRC
-Add argument: "SRC", definition: "%0"
-Declared macros pop:
+[preprocessor_stage_1.c:289]: Macro pop argument SRC
+[preprocessor_stage_1.c:314]: Add argument: "SRC", definition: "%0"
+[preprocessor_stage_1.c:339]: Declared macros pop:
 " 
 R03 <- R03++ 
 @P <- R03 
@@ -65,28 +56,7 @@ P: R0 <- R0"
 
 
 
-Macro rsp
-Macro rsp
-Macro rsp
-Macro nop
-Macro reg
-Macro push(2)
-Expanded like:
-" 
-@P <- R03 
-S(2): R0 <- R0 
-P: R0 <- R0 
-R2 <- 1 
-R03 <- R03 - R2"
-Macro pop(2)
-Expanded like:
-" 
-R03 <- R03++ 
-@P <- R03 
-L(2): R0 <- R0 
-P: R0 <- R0"
-Macro rsp
-[parsing.c:644]: Allocated 888 bytes for commands (37 objects)
+[parsing.c:644]: Allocated 864 bytes for commands (36 objects)
 [parsing.c:675]: Allocated 144 bytes for marks (6 objects)
 [parsing.c:679]: Allocated 2 bytes for loader marks (1 objects)
 [parsing.c:682]: Allocated 2 bytes for store marks (1 objects)
@@ -129,9 +99,9 @@ mark_info_t = { name="S", cmd_id=16 }
 mark_info_t = { name="P", cmd_id=24 }
 mark_info_t = { name="L", cmd_id=23 }
 mark_info_t = { name="HLT", cmd_id=28 }
-[linking.c:21]: Allocated 30 bytes (30 objects)
-[linking.c:70]: Last address: 31
-Allocated 48 bytes (6 blocks)
+[linking.c:23]: Allocated 30 bytes (30 objects)
+[linking.c:75]: Size: 31
+[preprocessor_stage_3.c:32]: Allocated 48 bytes (6 blocks)
 [preprocessor_stage_3.c:183]: Length: 150, cmd_id: 0
 [preprocessor_stage_3.c:183]: Length: 216, cmd_id: 1
 [preprocessor_stage_3.c:183]: Length: 353, cmd_id: 2
@@ -162,4 +132,4 @@ Allocated 48 bytes (6 blocks)
 [preprocessor_stage_3.c:183]: Length: 1168, cmd_id: 27
 [preprocessor_stage_3.c:183]: Length: 1206, cmd_id: 28
 [preprocessor_stage_3.c:183]: Length: 1209, cmd_id: 29
-Succesfully preprocessed!
+[preprocessor.c:34]: Succesfully preprocessed!

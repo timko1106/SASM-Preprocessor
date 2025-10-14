@@ -2,18 +2,16 @@
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <errno.h>
 #include <string.h>
-#include <stdio.h>
+#include <errno.h>
 
+//Препроцессинг через 3 фазы.
 int preprocess (state_t* state, int fd_1, int fd_2) {
-	/*const char start[] = "R0" RSP " <- 0xFF\nRC <- @_init\n";
-	write (fd_out, start, sizeof (start) - 1);*/
-
 	state_t next = {};
 	next.buffer[0] = 0;
 	next.length = 0;
 	
+	//Фаза 1: макросы
 	if (stage_1 (state, &next)) {
 		return EXIT_FAILURE;
 	}
@@ -21,20 +19,19 @@ int preprocess (state_t* state, int fd_1, int fd_2) {
 	state_t final = {};
 	final.buffer[0] = 0;
 	final.length = 0;
-	//return EXIT_SUCCESS;
-	//Future stages #2 and #3.
 
+	//Фаза 2: парсинг кода.
 	parsed_ext_t parsed = {};
-
 	int exit_code = EXIT_SUCCESS;
 	if (stage_2 (&next, &parsed) == EXIT_FAILURE) {
 		exit_code = EXIT_FAILURE;
 		goto cleanup;
 	}
+	//Фаза 3: сохранение в файл в формате совместимом с SASM.
 	exit_code = stage_3 (&final, &parsed);
 	if (exit_code == EXIT_SUCCESS) {
 		write (fd_2, final.buffer, final.length);
-		printf ("Succesfully preprocessed!\n");
+		PRINT ("Succesfully preprocessed!\n");
 	}
 cleanup:
 	data_parsed_ext_free (&parsed);
@@ -43,7 +40,7 @@ cleanup:
 
 int main (int argc, const char** argv) {
 	if (argc == 0 || argc != 1 +3) {
-		printf ("Need 3 arguments:\n"
+		PANIC ("Need 3 arguments:\n"
 			"1) Name of input file\n"
 			"2) Name of output file with expanded macroses\n"
 			"3) Name of output file\n");
@@ -53,18 +50,18 @@ int main (int argc, const char** argv) {
 	int fd1 = -1, fd2 = -1, fd3 = -1;
 	fd1 = open (argv[1], O_RDONLY);
 	if (fd1 == -1) {
-		printf ("Couldn't open input file: %s\n", strerror (errno));
+		PANIC ("Couldn't open input file: %s\n", strerror (errno));
 		return EXIT_FAILURE;
 	}
 	fd2 = open (argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0640);
 	if (fd2 == -1) {
-		printf ("Couldn't open output file 1: %s\n", strerror (errno));
+		PANIC ("Couldn't open output file 1: %s\n", strerror (errno));
 		exit_code = EXIT_FAILURE;
 		goto END;
 	}
 	fd3 = open (argv[3], O_WRONLY | O_CREAT | O_TRUNC, 0640);
 	if (fd3 == -1) {
-		printf ("Couldn't open output file 2: %s\n", strerror (errno));
+		PANIC ("Couldn't open output file 2: %s\n", strerror (errno));
 		exit_code = EXIT_FAILURE;
 		goto END;
 	}

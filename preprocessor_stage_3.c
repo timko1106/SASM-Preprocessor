@@ -25,11 +25,11 @@ int stage_3 (state_t* state_new, parsed_ext_t* prog) {
 	const word m_count = prog->_.m_count;
 	mark_p* ordered = alloc (mark_p, m_count);
 	if (ordered == NULL) {
-		printf ("ERROR: couldn't allocate %lu bytes (%u blocks)\n",
+		PANIC ("Couldn't allocate %lu bytes (%u blocks)\n",
 			size_calc (mark_p, m_count), m_count);
 		return EXIT_FAILURE;
 	}
-	printf ("Allocated %lu bytes (%u blocks)\n",
+	PRINT ("Allocated %lu bytes (%u blocks)\n",
 		size_calc (mark_p, m_count), m_count);
 	
 	mark_info_t* marks = prog->_.marks;

@@ -4,7 +4,8 @@ bool is_valid (char x) {
 	return isalpha (x) || isdigit (x) || x == '_';
 }
 
-uint8_t sizes[16] = {
+//sizes
+const uint8_t sizes[16] = {
 		[C_MOV] = 1,
 		[C_LOAD] = 2,
 		[C_STORE] = 2,
@@ -22,7 +23,7 @@ uint8_t sizes[16] = {
 		[C_INC] = 1,
 		[C_NONE] = 0 };
 #define Q(p) [p] = #p
-const char* cmd_names[16] = {
+const char* const cmd_names[16] = {
 		Q(C_MOV),
 		Q(C_LOAD),
 		Q(C_STORE),
@@ -39,6 +40,8 @@ const char* cmd_names[16] = {
 		Q(C_RAND),
 		Q(C_INC),
 		Q(C_NONE)};
+
+#undef Q
 
 void memcpy_s (char* dst, const char* src, size_t size) {
 	if (size == 0) return;

@@ -1,0 +1,121 @@
+
+
+
+
+
+
+
+; Пусть регистр R03 отвечает за стек.
+; Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)
+; Поэтому для пробрасывания значения в стек будет использован "костыль"
+; (сейчас для примера регистр R2):
+; 1) write R2 по назначению
+; 2) R2 = 1
+; 3) R03 -= R2
+; Для взятия из стека нужен следующий метод (регистр R2):
+; 1) inc R03
+; 2) read R2
+
+; place to save argument
+var1: R0 <- R0
+; n - N; fib(n<3)=1
+ 
+ret_fibbonaci: R0 <- R0 
+; FUNCTION fibbonaci
+fibbonaci: R0 <- R0
+	R0 <- @var1 ;Прочитать аргумент
+	R1 <- 3
+	RF <- R0 ~ R1
+	RC <- @fib_fast(S) ; Если < 3 - короткий путь
+	RF <- R0 ~ R1
+	RC <- @fib_3(Z) ; Если 3 - ответ 2
+	R1 <- 1 ;fib(n)=fib(n-1)+fib(n-2). n хранить в R0, поэтому R0 сохранить ОБЯЗАНЫ.
+	R0 <- R0 - R1
+	@var1 <- R0
+	 ; Сохранить только регистр R0 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+R0 <- [@_fib_1] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_fib_1: R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+
+	R2 <- @ret_fibbonaci ; R2=fib(n-1)
+	R1 <- 1
+	R0 <- R0 - R1; n-2
+	@var1 <- R0
+	R0 <- R2 ; теперь можно сохранять только R0
+	 ; Сохранить только регистр R0 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+R0 <- [@_fib_2] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_fib_2: R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+
+	R2 <- @ret_fibbonaci ; R0=fib(n-2)
+	R2 <- R2 + R0
+	@ret_fibbonaci <- R2
+	R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+ 
+;EXIT 
+@N <- R0 
+N: RC <- @0
+fib_3: R0 <- 2
+	@ret_fibbonaci <- R0
+	R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+ 
+;EXIT 
+@N <- R0 
+N: RC <- @0
+fib_fast: R1 <- 0
+	RF <- R0 ~ R1
+	RC <- @fib_zero(Z)
+	R0 <- 1
+	RC <- @exit1
+fib_zero: R0 <- 0
+exit1:@ret_fibbonaci <- R0
+	R03 <- R03++ ; POP R0 
+@N <- R03 
+N: R0 <- @0 
+ 
+;EXIT 
+@N <- R0 
+N: RC <- @0
+
+
+
+_start: R0 <- R0
+
+	R0 <- 10 ; fibbonaci(10)
+	@var1 <- R0
+	 ; Не сохранять регистры 
+R0 <- [@_start_fib] 
+@N <- R03 ; PUSH R0 
+N: @0 <- R0 
+R0 <- 1 
+R03 <- R03 - R0 
+RC <- @fibbonaci 
+_start_fib: R0 <- R0
+	R0 <- @ret_fibbonaci
+	@0xCF <- R0
+
+HLT: RC <- @HLT 
