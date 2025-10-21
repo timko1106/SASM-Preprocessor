@@ -49,7 +49,7 @@ int get_command (command_t* cmd, const machine_t* state, word rc) {
 	}
 	const reg_t dst = (major >> 2) & 3,
 		src = major & 3;
-	const word param = (sizes[_type] == 2 ? state->buffer[rc + 1] : 0);
+	const word param = (sizes[_type] == 2 ? state->buffer[(word)(rc + 1)] : 0);
 
 	cmd->_type = _type;
 	cmd->dst = dst;
