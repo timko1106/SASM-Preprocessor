@@ -4,42 +4,42 @@ var1: R00 <- R00
 ret_fibbonaci: R00 <- R00 
 fibbonaci: R00 <- R00 
 	R00 <- @4 
-	R01 <- 3
+	R01 <- 3 
 	RF <- R00 ~ R01 
-	RC <- @fib_fast(S)
+	RC <- @fib_fast(S) 
 	RF <- R00 ~ R01 
-	RC <- @fib_3(Z)
-	R01 <- 1
+	RC <- @fib_3(Z) 
+	R01 <- 1 
 	R00 <- R00 - R01 
 	@4 <- R00 
 	@25 <- R03 
 	@0 <- R00 
-	R00 <- 1
+	R00 <- 1 
 	R03 <- R03 - R00 
-	R00 <- 40
+	R00 <- 40 
 	@34 <- R03 
 	@0 <- R00 
-	R00 <- 1
+	R00 <- 1 
 	R03 <- R03 - R00 
-	RC <- @fibbonaci
+	RC <- @fibbonaci 
 _fib_1: R03 <- R03++ 
 	@44 <- R03 
 	R00 <- @0 
 	R02 <- @5 
-	R01 <- 1
+	R01 <- 1 
 	R00 <- R00 - R01 
 	@4 <- R00 
 	R00 <- R02 
 	@56 <- R03 
 	@0 <- R00 
-	R00 <- 1
+	R00 <- 1 
 	R03 <- R03 - R00 
-	R00 <- 71
+	R00 <- 71 
 	@65 <- R03 
 	@0 <- R00 
-	R00 <- 1
+	R00 <- 1 
 	R03 <- R03 - R00 
-	RC <- @fibbonaci
+	RC <- @fibbonaci 
 _fib_2: R03 <- R03++ 
 	@75 <- R03 
 	R00 <- @0 
@@ -50,36 +50,36 @@ _fib_2: R03 <- R03++
 	@85 <- R03 
 	R00 <- @0 
 	@89 <- R00 
-	RC <- @0 
-fib_3: R00 <- 2
+	RC <- @0  
+fib_3: R00 <- 2 
 	@5 <- R00 
 	R03 <- R03++ 
 	@98 <- R03 
 	R00 <- @0 
 	@102 <- R00 
-	RC <- @0 
-fib_fast: R01 <- 0
+	RC <- @0  
+fib_fast: R01 <- 0 
 	RF <- R00 ~ R01 
-	RC <- @fib_zero(Z)
-	R00 <- 1
-	RC <- @exit1
-fib_zero: R00 <- 0
+	RC <- @fib_zero(Z) 
+	R00 <- 1 
+	RC <- @exit1 
+fib_zero: R00 <- 0 
 exit1: @5 <- R00 
 	R03 <- R03++ 
 	@120 <- R03 
 	R00 <- @0 
 	@124 <- R00 
-	RC <- @0 
+	RC <- @0  
 _start: R00 <- R00 
-	R00 <- 10
+	R00 <- 5 
 	@4 <- R00 
-	R00 <- 141
+	R00 <- 141 
 	@135 <- R03 
 	@0 <- R00 
-	R00 <- 1
+	R00 <- 1 
 	R03 <- R03 - R00 
-	RC <- @fibbonaci
+	RC <- @fibbonaci 
 _start_fib: R00 <- R00 
 	R00 <- @5 
 	@207 <- R00 
-HLT: RC <- @HLT
+HLT: RC <- @HLT 

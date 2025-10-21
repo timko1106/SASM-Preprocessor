@@ -88,7 +88,7 @@ exit1:@%ret(fibbonaci) <- R0
 
 _start: %nop
 
-	R0 <- 10 ; fibbonaci(10)
+	R0 <- 5 ; fibbonaci(10)
 	@var1 <- R0
 	%call_extreme(fibbonaci,start_fib)
 	R0 <- @%ret(fibbonaci)

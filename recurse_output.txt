@@ -130,9 +130,9 @@ N: RC <- @0"
 
 
 
-[parsing.c:644]: Allocated 2928 bytes for commands (122 objects)
-[parsing.c:675]: Allocated 600 bytes for marks (25 objects)
-[parsing.c:691]: Allocated 13 bytes for nexts marks (13 objects)
+[parsing.c:635]: Allocated 2928 bytes for commands (122 objects)
+[parsing.c:666]: Allocated 600 bytes for marks (25 objects)
+[parsing.c:682]: Allocated 13 bytes for nexts marks (13 objects)
 Parsed command_ext[0] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
 Parsed command_ext[1] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
 Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
@@ -232,7 +232,7 @@ Parsed command_ext[95] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", m
 Parsed command_ext[96] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
 Parsed command_ext[97] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment="", mark="None"}
 Parsed command_ext[98] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
-Parsed command_ext[99] { _ = { dst=0, src=0, param=10, type=C_MOV_V}, comment=" fibbonaci(10)", mark="None"}
+Parsed command_ext[99] { _ = { dst=0, src=0, param=5, type=C_MOV_V}, comment=" fibbonaci(10)", mark="None"}
 Parsed command_ext[100] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment="", mark="var1"}
 Parsed command_ext[101] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Не сохранять регистры ", mark="None"}
 Parsed command_ext[102] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment="", mark="_start_fib"}
@@ -247,8 +247,8 @@ Parsed command_ext[110] { _ = { dst=0, src=0, param=207, type=C_STORE}, comment=
 Parsed command_ext[111] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
 Parsed command_ext[112] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="HLT"}
 Parsed command_ext[113] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
-[parsing.c:730]: Shorted length: 114
-[parsing.c:731]: Marks:
+[parsing.c:721]: Shorted length: 114
+[parsing.c:722]: Marks:
 mark_info_t = { name="var1", cmd_id=13 }
 mark_info_t = { name="ret_fibbonaci", cmd_id=16 }
 mark_info_t = { name="fibbonaci", cmd_id=18 }
@@ -274,121 +274,121 @@ mark_info_t = { name="_start", cmd_id=97 }
 mark_info_t = { name="_start_fib", cmd_id=108 }
 mark_info_t = { name="N", cmd_id=104 }
 mark_info_t = { name="HLT", cmd_id=112 }
-[linking.c:23]: Allocated 114 bytes (114 objects)
-[linking.c:75]: Size: 148
-[preprocessor_stage_3.c:32]: Allocated 200 bytes (25 blocks)
-[preprocessor_stage_3.c:183]: Length: 41, cmd_id: 0
-[preprocessor_stage_3.c:183]: Length: 107, cmd_id: 1
-[preprocessor_stage_3.c:183]: Length: 244, cmd_id: 2
-[preprocessor_stage_3.c:183]: Length: 377, cmd_id: 3
-[preprocessor_stage_3.c:183]: Length: 437, cmd_id: 4
-[preprocessor_stage_3.c:183]: Length: 479, cmd_id: 5
-[preprocessor_stage_3.c:183]: Length: 493, cmd_id: 6
-[preprocessor_stage_3.c:183]: Length: 510, cmd_id: 7
-[preprocessor_stage_3.c:183]: Length: 612, cmd_id: 8
-[preprocessor_stage_3.c:183]: Length: 627, cmd_id: 9
-[preprocessor_stage_3.c:183]: Length: 642, cmd_id: 10
-[preprocessor_stage_3.c:183]: Length: 645, cmd_id: 11
-[preprocessor_stage_3.c:183]: Length: 672, cmd_id: 12
-[preprocessor_stage_3.c:183]: Length: 707, cmd_id: 13
-[preprocessor_stage_3.c:183]: Length: 729, cmd_id: 14
-[preprocessor_stage_3.c:183]: Length: 732, cmd_id: 15
-[preprocessor_stage_3.c:183]: Length: 776, cmd_id: 16
-[preprocessor_stage_3.c:183]: Length: 799, cmd_id: 17
-[preprocessor_stage_3.c:183]: Length: 839, cmd_id: 18
-[preprocessor_stage_3.c:183]: Length: 906, cmd_id: 19
-[preprocessor_stage_3.c:183]: Length: 937, cmd_id: 20
-[preprocessor_stage_3.c:183]: Length: 973, cmd_id: 21
-[preprocessor_stage_3.c:183]: Length: 1056, cmd_id: 22
-[preprocessor_stage_3.c:183]: Length: 1092, cmd_id: 23
-[preprocessor_stage_3.c:183]: Length: 1157, cmd_id: 24
-[preprocessor_stage_3.c:183]: Length: 1291, cmd_id: 25
-[preprocessor_stage_3.c:183]: Length: 1328, cmd_id: 26
-[preprocessor_stage_3.c:183]: Length: 1362, cmd_id: 27
-[preprocessor_stage_3.c:183]: Length: 1417, cmd_id: 28
-[preprocessor_stage_3.c:183]: Length: 1461, cmd_id: 29
-[preprocessor_stage_3.c:183]: Length: 1495, cmd_id: 30
-[preprocessor_stage_3.c:183]: Length: 1527, cmd_id: 31
-[preprocessor_stage_3.c:183]: Length: 1564, cmd_id: 32
-[preprocessor_stage_3.c:183]: Length: 1597, cmd_id: 33
-[preprocessor_stage_3.c:183]: Length: 1641, cmd_id: 34
-[preprocessor_stage_3.c:183]: Length: 1675, cmd_id: 35
-[preprocessor_stage_3.c:183]: Length: 1707, cmd_id: 36
-[preprocessor_stage_3.c:183]: Length: 1744, cmd_id: 37
-[preprocessor_stage_3.c:183]: Length: 1784, cmd_id: 38
-[preprocessor_stage_3.c:183]: Length: 1832, cmd_id: 39
-[preprocessor_stage_3.c:183]: Length: 1867, cmd_id: 40
-[preprocessor_stage_3.c:183]: Length: 1901, cmd_id: 41
-[preprocessor_stage_3.c:183]: Length: 1904, cmd_id: 42
-[preprocessor_stage_3.c:183]: Length: 1950, cmd_id: 43
-[preprocessor_stage_3.c:183]: Length: 1982, cmd_id: 44
-[preprocessor_stage_3.c:183]: Length: 2023, cmd_id: 45
-[preprocessor_stage_3.c:183]: Length: 2057, cmd_id: 46
-[preprocessor_stage_3.c:183]: Length: 2147, cmd_id: 47
-[preprocessor_stage_3.c:183]: Length: 2202, cmd_id: 48
-[preprocessor_stage_3.c:183]: Length: 2246, cmd_id: 49
-[preprocessor_stage_3.c:183]: Length: 2280, cmd_id: 50
-[preprocessor_stage_3.c:183]: Length: 2312, cmd_id: 51
-[preprocessor_stage_3.c:183]: Length: 2349, cmd_id: 52
-[preprocessor_stage_3.c:183]: Length: 2382, cmd_id: 53
-[preprocessor_stage_3.c:183]: Length: 2426, cmd_id: 54
-[preprocessor_stage_3.c:183]: Length: 2460, cmd_id: 55
-[preprocessor_stage_3.c:183]: Length: 2492, cmd_id: 56
-[preprocessor_stage_3.c:183]: Length: 2529, cmd_id: 57
-[preprocessor_stage_3.c:183]: Length: 2569, cmd_id: 58
-[preprocessor_stage_3.c:183]: Length: 2617, cmd_id: 59
-[preprocessor_stage_3.c:183]: Length: 2652, cmd_id: 60
-[preprocessor_stage_3.c:183]: Length: 2686, cmd_id: 61
-[preprocessor_stage_3.c:183]: Length: 2689, cmd_id: 62
-[preprocessor_stage_3.c:183]: Length: 2735, cmd_id: 63
-[preprocessor_stage_3.c:183]: Length: 2772, cmd_id: 64
-[preprocessor_stage_3.c:183]: Length: 2806, cmd_id: 65
-[preprocessor_stage_3.c:183]: Length: 2847, cmd_id: 66
-[preprocessor_stage_3.c:183]: Length: 2882, cmd_id: 67
-[preprocessor_stage_3.c:183]: Length: 2916, cmd_id: 68
-[preprocessor_stage_3.c:183]: Length: 2919, cmd_id: 69
-[preprocessor_stage_3.c:183]: Length: 2928, cmd_id: 70
-[preprocessor_stage_3.c:183]: Length: 2963, cmd_id: 71
-[preprocessor_stage_3.c:183]: Length: 2996, cmd_id: 72
-[preprocessor_stage_3.c:183]: Length: 3034, cmd_id: 73
-[preprocessor_stage_3.c:183]: Length: 3068, cmd_id: 74
-[preprocessor_stage_3.c:183]: Length: 3109, cmd_id: 75
-[preprocessor_stage_3.c:183]: Length: 3144, cmd_id: 76
-[preprocessor_stage_3.c:183]: Length: 3178, cmd_id: 77
-[preprocessor_stage_3.c:183]: Length: 3181, cmd_id: 78
-[preprocessor_stage_3.c:183]: Length: 3190, cmd_id: 79
-[preprocessor_stage_3.c:183]: Length: 3227, cmd_id: 80
-[preprocessor_stage_3.c:183]: Length: 3262, cmd_id: 81
-[preprocessor_stage_3.c:183]: Length: 3305, cmd_id: 82
-[preprocessor_stage_3.c:183]: Length: 3342, cmd_id: 83
-[preprocessor_stage_3.c:183]: Length: 3386, cmd_id: 84
-[preprocessor_stage_3.c:183]: Length: 3420, cmd_id: 85
-[preprocessor_stage_3.c:183]: Length: 3458, cmd_id: 86
-[preprocessor_stage_3.c:183]: Length: 3501, cmd_id: 87
-[preprocessor_stage_3.c:183]: Length: 3543, cmd_id: 88
-[preprocessor_stage_3.c:183]: Length: 3585, cmd_id: 89
-[preprocessor_stage_3.c:183]: Length: 3623, cmd_id: 90
-[preprocessor_stage_3.c:183]: Length: 3659, cmd_id: 91
-[preprocessor_stage_3.c:183]: Length: 3662, cmd_id: 92
-[preprocessor_stage_3.c:183]: Length: 3671, cmd_id: 93
-[preprocessor_stage_3.c:183]: Length: 3709, cmd_id: 94
-[preprocessor_stage_3.c:183]: Length: 3744, cmd_id: 95
-[preprocessor_stage_3.c:183]: Length: 3747, cmd_id: 96
-[preprocessor_stage_3.c:183]: Length: 3786, cmd_id: 97
-[preprocessor_stage_3.c:183]: Length: 3789, cmd_id: 98
-[preprocessor_stage_3.c:183]: Length: 3838, cmd_id: 99
-[preprocessor_stage_3.c:183]: Length: 3875, cmd_id: 100
-[preprocessor_stage_3.c:183]: Length: 3921, cmd_id: 101
-[preprocessor_stage_3.c:183]: Length: 3958, cmd_id: 102
-[preprocessor_stage_3.c:183]: Length: 4006, cmd_id: 103
-[preprocessor_stage_3.c:183]: Length: 4043, cmd_id: 104
-[preprocessor_stage_3.c:183]: Length: 4078, cmd_id: 105
-[preprocessor_stage_3.c:183]: Length: 4117, cmd_id: 106
-[preprocessor_stage_3.c:183]: Length: 4160, cmd_id: 107
-[preprocessor_stage_3.c:183]: Length: 4204, cmd_id: 108
-[preprocessor_stage_3.c:183]: Length: 4241, cmd_id: 109
-[preprocessor_stage_3.c:183]: Length: 4280, cmd_id: 110
-[preprocessor_stage_3.c:183]: Length: 4283, cmd_id: 111
-[preprocessor_stage_3.c:183]: Length: 4324, cmd_id: 112
-[preprocessor_stage_3.c:183]: Length: 4327, cmd_id: 113
+[linking.c:99]: Allocated 114 bytes (114 objects)
+[linking.c:151]: Size: 148
+[preprocessor_stage_3.c:33]: Allocated 200 bytes (25 blocks)
+[preprocessor_stage_3.c:126]: Length: 39, cmd_id: 0
+[preprocessor_stage_3.c:126]: Length: 103, cmd_id: 1
+[preprocessor_stage_3.c:126]: Length: 238, cmd_id: 2
+[preprocessor_stage_3.c:126]: Length: 369, cmd_id: 3
+[preprocessor_stage_3.c:126]: Length: 427, cmd_id: 4
+[preprocessor_stage_3.c:126]: Length: 467, cmd_id: 5
+[preprocessor_stage_3.c:126]: Length: 479, cmd_id: 6
+[preprocessor_stage_3.c:126]: Length: 494, cmd_id: 7
+[preprocessor_stage_3.c:126]: Length: 594, cmd_id: 8
+[preprocessor_stage_3.c:126]: Length: 607, cmd_id: 9
+[preprocessor_stage_3.c:126]: Length: 620, cmd_id: 10
+[preprocessor_stage_3.c:126]: Length: 621, cmd_id: 11
+[preprocessor_stage_3.c:126]: Length: 646, cmd_id: 12
+[preprocessor_stage_3.c:126]: Length: 669, cmd_id: 13
+[preprocessor_stage_3.c:126]: Length: 689, cmd_id: 14
+[preprocessor_stage_3.c:126]: Length: 690, cmd_id: 15
+[preprocessor_stage_3.c:126]: Length: 722, cmd_id: 16
+[preprocessor_stage_3.c:126]: Length: 743, cmd_id: 17
+[preprocessor_stage_3.c:126]: Length: 771, cmd_id: 18
+[preprocessor_stage_3.c:126]: Length: 827, cmd_id: 19
+[preprocessor_stage_3.c:126]: Length: 847, cmd_id: 20
+[preprocessor_stage_3.c:126]: Length: 871, cmd_id: 21
+[preprocessor_stage_3.c:126]: Length: 944, cmd_id: 22
+[preprocessor_stage_3.c:126]: Length: 968, cmd_id: 23
+[preprocessor_stage_3.c:126]: Length: 1023, cmd_id: 24
+[preprocessor_stage_3.c:126]: Length: 1147, cmd_id: 25
+[preprocessor_stage_3.c:126]: Length: 1172, cmd_id: 26
+[preprocessor_stage_3.c:126]: Length: 1194, cmd_id: 27
+[preprocessor_stage_3.c:126]: Length: 1247, cmd_id: 28
+[preprocessor_stage_3.c:126]: Length: 1280, cmd_id: 29
+[preprocessor_stage_3.c:126]: Length: 1302, cmd_id: 30
+[preprocessor_stage_3.c:126]: Length: 1323, cmd_id: 31
+[preprocessor_stage_3.c:126]: Length: 1348, cmd_id: 32
+[preprocessor_stage_3.c:126]: Length: 1370, cmd_id: 33
+[preprocessor_stage_3.c:126]: Length: 1403, cmd_id: 34
+[preprocessor_stage_3.c:126]: Length: 1425, cmd_id: 35
+[preprocessor_stage_3.c:126]: Length: 1446, cmd_id: 36
+[preprocessor_stage_3.c:126]: Length: 1471, cmd_id: 37
+[preprocessor_stage_3.c:126]: Length: 1500, cmd_id: 38
+[preprocessor_stage_3.c:126]: Length: 1537, cmd_id: 39
+[preprocessor_stage_3.c:126]: Length: 1560, cmd_id: 40
+[preprocessor_stage_3.c:126]: Length: 1582, cmd_id: 41
+[preprocessor_stage_3.c:126]: Length: 1583, cmd_id: 42
+[preprocessor_stage_3.c:126]: Length: 1618, cmd_id: 43
+[preprocessor_stage_3.c:126]: Length: 1639, cmd_id: 44
+[preprocessor_stage_3.c:126]: Length: 1669, cmd_id: 45
+[preprocessor_stage_3.c:126]: Length: 1691, cmd_id: 46
+[preprocessor_stage_3.c:126]: Length: 1770, cmd_id: 47
+[preprocessor_stage_3.c:126]: Length: 1823, cmd_id: 48
+[preprocessor_stage_3.c:126]: Length: 1856, cmd_id: 49
+[preprocessor_stage_3.c:126]: Length: 1878, cmd_id: 50
+[preprocessor_stage_3.c:126]: Length: 1899, cmd_id: 51
+[preprocessor_stage_3.c:126]: Length: 1924, cmd_id: 52
+[preprocessor_stage_3.c:126]: Length: 1946, cmd_id: 53
+[preprocessor_stage_3.c:126]: Length: 1979, cmd_id: 54
+[preprocessor_stage_3.c:126]: Length: 2001, cmd_id: 55
+[preprocessor_stage_3.c:126]: Length: 2022, cmd_id: 56
+[preprocessor_stage_3.c:126]: Length: 2047, cmd_id: 57
+[preprocessor_stage_3.c:126]: Length: 2076, cmd_id: 58
+[preprocessor_stage_3.c:126]: Length: 2113, cmd_id: 59
+[preprocessor_stage_3.c:126]: Length: 2136, cmd_id: 60
+[preprocessor_stage_3.c:126]: Length: 2158, cmd_id: 61
+[preprocessor_stage_3.c:126]: Length: 2159, cmd_id: 62
+[preprocessor_stage_3.c:126]: Length: 2194, cmd_id: 63
+[preprocessor_stage_3.c:126]: Length: 2219, cmd_id: 64
+[preprocessor_stage_3.c:126]: Length: 2241, cmd_id: 65
+[preprocessor_stage_3.c:126]: Length: 2271, cmd_id: 66
+[preprocessor_stage_3.c:126]: Length: 2294, cmd_id: 67
+[preprocessor_stage_3.c:126]: Length: 2316, cmd_id: 68
+[preprocessor_stage_3.c:126]: Length: 2317, cmd_id: 69
+[preprocessor_stage_3.c:126]: Length: 2324, cmd_id: 70
+[preprocessor_stage_3.c:126]: Length: 2347, cmd_id: 71
+[preprocessor_stage_3.c:126]: Length: 2369, cmd_id: 72
+[preprocessor_stage_3.c:126]: Length: 2396, cmd_id: 73
+[preprocessor_stage_3.c:126]: Length: 2418, cmd_id: 74
+[preprocessor_stage_3.c:126]: Length: 2448, cmd_id: 75
+[preprocessor_stage_3.c:126]: Length: 2471, cmd_id: 76
+[preprocessor_stage_3.c:126]: Length: 2493, cmd_id: 77
+[preprocessor_stage_3.c:126]: Length: 2494, cmd_id: 78
+[preprocessor_stage_3.c:126]: Length: 2501, cmd_id: 79
+[preprocessor_stage_3.c:126]: Length: 2526, cmd_id: 80
+[preprocessor_stage_3.c:126]: Length: 2550, cmd_id: 81
+[preprocessor_stage_3.c:126]: Length: 2582, cmd_id: 82
+[preprocessor_stage_3.c:126]: Length: 2607, cmd_id: 83
+[preprocessor_stage_3.c:126]: Length: 2640, cmd_id: 84
+[preprocessor_stage_3.c:126]: Length: 2663, cmd_id: 85
+[preprocessor_stage_3.c:126]: Length: 2690, cmd_id: 86
+[preprocessor_stage_3.c:126]: Length: 2722, cmd_id: 87
+[preprocessor_stage_3.c:126]: Length: 2752, cmd_id: 88
+[preprocessor_stage_3.c:126]: Length: 2783, cmd_id: 89
+[preprocessor_stage_3.c:126]: Length: 2809, cmd_id: 90
+[preprocessor_stage_3.c:126]: Length: 2833, cmd_id: 91
+[preprocessor_stage_3.c:126]: Length: 2834, cmd_id: 92
+[preprocessor_stage_3.c:126]: Length: 2841, cmd_id: 93
+[preprocessor_stage_3.c:126]: Length: 2867, cmd_id: 94
+[preprocessor_stage_3.c:126]: Length: 2891, cmd_id: 95
+[preprocessor_stage_3.c:126]: Length: 2892, cmd_id: 96
+[preprocessor_stage_3.c:126]: Length: 2919, cmd_id: 97
+[preprocessor_stage_3.c:126]: Length: 2920, cmd_id: 98
+[preprocessor_stage_3.c:126]: Length: 2958, cmd_id: 99
+[preprocessor_stage_3.c:126]: Length: 2982, cmd_id: 100
+[preprocessor_stage_3.c:126]: Length: 3026, cmd_id: 101
+[preprocessor_stage_3.c:126]: Length: 3051, cmd_id: 102
+[preprocessor_stage_3.c:126]: Length: 3087, cmd_id: 103
+[preprocessor_stage_3.c:126]: Length: 3111, cmd_id: 104
+[preprocessor_stage_3.c:126]: Length: 3134, cmd_id: 105
+[preprocessor_stage_3.c:126]: Length: 3160, cmd_id: 106
+[preprocessor_stage_3.c:126]: Length: 3191, cmd_id: 107
+[preprocessor_stage_3.c:126]: Length: 3222, cmd_id: 108
+[preprocessor_stage_3.c:126]: Length: 3246, cmd_id: 109
+[preprocessor_stage_3.c:126]: Length: 3272, cmd_id: 110
+[preprocessor_stage_3.c:126]: Length: 3273, cmd_id: 111
+[preprocessor_stage_3.c:126]: Length: 3302, cmd_id: 112
+[preprocessor_stage_3.c:126]: Length: 3303, cmd_id: 113
 [preprocessor.c:34]: Succesfully preprocessed!

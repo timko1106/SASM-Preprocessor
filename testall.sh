@@ -1,7 +1,9 @@
 #!/bin/bash
+rm -f *.sasm *.Sasm *\_output.txt *\_output2.txt *.Sasm.short
 for filename in *.asm; do
-	echo $filename
 	NAME=$(echo "$filename" | grep -oE "^[^.]+")
-	./preprocessor "./$filename" "./$NAME.sasm" "./$NAME.Sasm" > "./$NAME_output.txt"
+	echo $filename $NAME
+	./bin/preprocessor "./$filename" "./$NAME.sasm" "./$NAME.Sasm" > ./$NAME\_output.txt
+	./bin/assembler "./$NAME.Sasm" "./$NAME.out" > ./$NAME\_output2.txt
 	cat "./$NAME.Sasm" | grep -oE "^[^;]+" > "./$NAME.Sasm.short"
 done

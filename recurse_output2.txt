@@ -1,123 +1,123 @@
-[parsing.c:644]: Allocated 2784 bytes for commands (116 objects)
-[parsing.c:675]: Allocated 312 bytes for marks (13 objects)
+[parsing.c:635]: Allocated 2784 bytes for commands (116 objects)
+[parsing.c:666]: Allocated 312 bytes for marks (13 objects)
 Parsed command_ext[0] { _ = { dst=3, src=0, param=255, type=C_MOV_V}, comment=" 0 1", mark="None"}
 Parsed command_ext[1] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="_start"}
-Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[3] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Пусть регистр R03 отвечает за стек.;", mark="None"}
-Parsed command_ext[4] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...);", mark="None"}
-Parsed command_ext[5] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Поэтому для пробрасывания значения в стек будет использован "костыль";", mark="None"}
-Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  (сейчас для примера регистр R2):;", mark="None"}
-Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  1) write R2 по назначению;", mark="None"}
-Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  2) R2 = 1;", mark="None"}
-Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  3) R03 -= R2;", mark="None"}
-Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Для взятия из стека нужен следующий метод (регистр R2):;", mark="None"}
-Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  1) inc R03;", mark="None"}
-Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  2) read R2;", mark="None"}
-Parsed command_ext[13] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  place to save argumentv", mark="None"}
-Parsed command_ext[15] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=13; 4) ", mark="None"}
-Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  n - N; fib(n<3)=1r", mark="None"}
-Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[18] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=16; 5) ", mark="None"}
-Parsed command_ext[19] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  FUNCTION fibbonacif", mark="None"}
-Parsed command_ext[20] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=18; 6) ", mark="None"}
-Parsed command_ext[21] { _ = { dst=0, src=0, param=4, type=C_LOAD}, comment=" (cmd_id=19; 7, 8) Прочитать аргумент", mark="None"}
-Parsed command_ext[22] { _ = { dst=1, src=0, param=3, type=C_MOV_V}, comment=" (cmd_id=20; 9, 10) ", mark="None"}
-Parsed command_ext[23] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (cmd_id=21; 11) ", mark="None"}
-Parsed command_ext[24] { _ = { dst=0, src=0, param=0, type=C_JMP_S}, comment=" (cmd_id=22; 12, 13)  Если < 3 - короткий путь", mark="fib_fast"}
-Parsed command_ext[25] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (cmd_id=23; 14) ", mark="None"}
-Parsed command_ext[26] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment=" (cmd_id=24; 15, 16)  Если 3 - ответ 2", mark="fib_3"}
-Parsed command_ext[27] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=25; 17, 18) fib(n)=fib(n-1)+fib(n-2). n хранить в R0, поэтому R0 сохранить ОБЯЗАНЫ.", mark="None"}
-Parsed command_ext[28] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment=" (cmd_id=26; 19) ", mark="None"}
-Parsed command_ext[29] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (cmd_id=27; 20, 21) ", mark="None"}
-Parsed command_ext[30] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Сохранить только регистр R0 @", mark="None"}
-Parsed command_ext[31] { _ = { dst=0, src=3, param=25, type=C_STORE}, comment=" (cmd_id=29; 22, 23)  PUSH R0 ", mark="None"}
-Parsed command_ext[32] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (cmd_id=30; 24, 25) ", mark="None"}
-Parsed command_ext[33] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=31; 26, 27) ", mark="None"}
-Parsed command_ext[34] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (cmd_id=32; 28) ", mark="None"}
-Parsed command_ext[35] { _ = { dst=0, src=0, param=40, type=C_MOV_V}, comment=" (cmd_id=33; 29, 30) ", mark="None"}
-Parsed command_ext[36] { _ = { dst=0, src=3, param=34, type=C_STORE}, comment=" (cmd_id=34; 31, 32)  PUSH R0 ", mark="None"}
-Parsed command_ext[37] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (cmd_id=35; 33, 34) ", mark="None"}
-Parsed command_ext[38] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=36; 35, 36) ", mark="None"}
-Parsed command_ext[39] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (cmd_id=37; 37) ", mark="None"}
-Parsed command_ext[40] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=38; 38, 39) ", mark="fibbonaci"}
-Parsed command_ext[41] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=39; 40)  POP R0 ", mark="None"}
-Parsed command_ext[42] { _ = { dst=0, src=3, param=44, type=C_STORE}, comment=" (cmd_id=40; 41, 42) ", mark="None"}
-Parsed command_ext[43] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (cmd_id=41; 43, 44) ", mark="None"}
-Parsed command_ext[44] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[45] { _ = { dst=2, src=0, param=5, type=C_LOAD}, comment=" (cmd_id=43; 45, 46)  R2=fib(n-1)", mark="None"}
-Parsed command_ext[46] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=44; 47, 48) ", mark="None"}
-Parsed command_ext[47] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment=" (cmd_id=45; 49)  n-2", mark="None"}
-Parsed command_ext[48] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (cmd_id=46; 50, 51) ", mark="None"}
-Parsed command_ext[49] { _ = { dst=0, src=2, param=0, type=C_MOV}, comment=" (cmd_id=47; 52)  теперь можно сохранять только R0", mark="None"}
-Parsed command_ext[50] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Сохранить только регистр R0 @", mark="None"}
-Parsed command_ext[51] { _ = { dst=0, src=3, param=56, type=C_STORE}, comment=" (cmd_id=49; 53, 54)  PUSH R0 ", mark="None"}
-Parsed command_ext[52] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (cmd_id=50; 55, 56) ", mark="None"}
-Parsed command_ext[53] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=51; 57, 58) ", mark="None"}
-Parsed command_ext[54] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (cmd_id=52; 59) ", mark="None"}
-Parsed command_ext[55] { _ = { dst=0, src=0, param=71, type=C_MOV_V}, comment=" (cmd_id=53; 60, 61) ", mark="None"}
-Parsed command_ext[56] { _ = { dst=0, src=3, param=65, type=C_STORE}, comment=" (cmd_id=54; 62, 63)  PUSH R0 ", mark="None"}
-Parsed command_ext[57] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (cmd_id=55; 64, 65) ", mark="None"}
-Parsed command_ext[58] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=56; 66, 67) ", mark="None"}
-Parsed command_ext[59] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (cmd_id=57; 68) ", mark="None"}
-Parsed command_ext[60] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=58; 69, 70) ", mark="fibbonaci"}
-Parsed command_ext[61] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=59; 71)  POP R0 ", mark="None"}
-Parsed command_ext[62] { _ = { dst=0, src=3, param=75, type=C_STORE}, comment=" (cmd_id=60; 72, 73) ", mark="None"}
-Parsed command_ext[63] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (cmd_id=61; 74, 75) ", mark="None"}
-Parsed command_ext[64] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[65] { _ = { dst=2, src=0, param=5, type=C_LOAD}, comment=" (cmd_id=63; 76, 77)  R0=fib(n-2)", mark="None"}
-Parsed command_ext[66] { _ = { dst=2, src=0, param=0, type=C_ADD}, comment=" (cmd_id=64; 78) ", mark="None"}
-Parsed command_ext[67] { _ = { dst=0, src=2, param=5, type=C_STORE}, comment=" (cmd_id=65; 79, 80) ", mark="None"}
-Parsed command_ext[68] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=66; 81)  POP R0 ", mark="None"}
-Parsed command_ext[69] { _ = { dst=0, src=3, param=85, type=C_STORE}, comment=" (cmd_id=67; 82, 83) ", mark="None"}
-Parsed command_ext[70] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (cmd_id=68; 84, 85) ", mark="None"}
-Parsed command_ext[71] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[72] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" EXIT @", mark="None"}
-Parsed command_ext[73] { _ = { dst=0, src=0, param=89, type=C_STORE}, comment=" (cmd_id=71; 86, 87) ", mark="None"}
-Parsed command_ext[74] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=72; 88, 89) ", mark="None"}
-Parsed command_ext[75] { _ = { dst=0, src=0, param=2, type=C_MOV_V}, comment=" (cmd_id=73; 90, 91) ", mark="None"}
-Parsed command_ext[76] { _ = { dst=0, src=0, param=5, type=C_STORE}, comment=" (cmd_id=74; 92, 93) ", mark="None"}
-Parsed command_ext[77] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=75; 94)  POP R0 ", mark="None"}
-Parsed command_ext[78] { _ = { dst=0, src=3, param=98, type=C_STORE}, comment=" (cmd_id=76; 95, 96) ", mark="None"}
-Parsed command_ext[79] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (cmd_id=77; 97, 98) ", mark="None"}
-Parsed command_ext[80] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[81] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" EXIT @", mark="None"}
-Parsed command_ext[82] { _ = { dst=0, src=0, param=102, type=C_STORE}, comment=" (cmd_id=80; 99, 100) ", mark="None"}
-Parsed command_ext[83] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=81; 101, 102) ", mark="None"}
-Parsed command_ext[84] { _ = { dst=1, src=0, param=0, type=C_MOV_V}, comment=" (cmd_id=82; 103, 104) ", mark="None"}
-Parsed command_ext[85] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (cmd_id=83; 105) ", mark="None"}
-Parsed command_ext[86] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment=" (cmd_id=84; 106, 107) ", mark="fib_zero"}
-Parsed command_ext[87] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=85; 108, 109) ", mark="None"}
-Parsed command_ext[88] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=86; 110, 111) ", mark="exit1"}
-Parsed command_ext[89] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment=" (cmd_id=87; 112, 113) ", mark="None"}
-Parsed command_ext[90] { _ = { dst=0, src=0, param=5, type=C_STORE}, comment=" (cmd_id=88; 114, 115) ", mark="None"}
-Parsed command_ext[91] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=89; 116)  POP R0 ", mark="None"}
-Parsed command_ext[92] { _ = { dst=0, src=3, param=120, type=C_STORE}, comment=" (cmd_id=90; 117, 118) ", mark="None"}
-Parsed command_ext[93] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (cmd_id=91; 119, 120) ", mark="None"}
-Parsed command_ext[94] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[95] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" EXIT @", mark="None"}
-Parsed command_ext[96] { _ = { dst=0, src=0, param=124, type=C_STORE}, comment=" (cmd_id=94; 121, 122) ", mark="None"}
-Parsed command_ext[97] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=95; 123, 124) ", mark="None"}
-Parsed command_ext[98] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[99] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=97; 125) ", mark="None"}
-Parsed command_ext[100] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[101] { _ = { dst=0, src=0, param=10, type=C_MOV_V}, comment=" (cmd_id=99; 126, 127)  fibbonaci(10)", mark="None"}
-Parsed command_ext[102] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (cmd_id=100; 128, 129) ", mark="None"}
-Parsed command_ext[103] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Не сохранять регистры R", mark="None"}
-Parsed command_ext[104] { _ = { dst=0, src=0, param=141, type=C_MOV_V}, comment=" (cmd_id=102; 130, 131) ", mark="None"}
-Parsed command_ext[105] { _ = { dst=0, src=3, param=135, type=C_STORE}, comment=" (cmd_id=103; 132, 133)  PUSH R0 ", mark="None"}
-Parsed command_ext[106] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (cmd_id=104; 134, 135) ", mark="None"}
-Parsed command_ext[107] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=105; 136, 137) ", mark="None"}
-Parsed command_ext[108] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (cmd_id=106; 138) ", mark="None"}
-Parsed command_ext[109] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=107; 139, 140) ", mark="fibbonaci"}
-Parsed command_ext[110] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=108; 141) ", mark="None"}
-Parsed command_ext[111] { _ = { dst=0, src=0, param=5, type=C_LOAD}, comment=" (cmd_id=109; 142, 143) ", mark="None"}
-Parsed command_ext[112] { _ = { dst=0, src=0, param=207, type=C_STORE}, comment=" (cmd_id=110; 144, 145) ", mark="None"}
-Parsed command_ext[113] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[114] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=112; 146, 147) ", mark="HLT"}
-Parsed command_ext[115] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-[parsing.c:730]: Shorted length: 116
-[parsing.c:731]: Marks:
+Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[3] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
+Parsed command_ext[4] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
+Parsed command_ext[5] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Поэтому для пробрасывания значения в стек будет использован "костыль"", mark="None"}
+Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" (сейчас для примера регистр R2):", mark="None"}
+Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) write R2 по назначению", mark="None"}
+Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) R2 = 1", mark="None"}
+Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 3) R03 -= R2", mark="None"}
+Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Для взятия из стека нужен следующий метод (регистр R2):", mark="None"}
+Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) inc R03", mark="None"}
+Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) read R2", mark="None"}
+Parsed command_ext[13] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" place to save argument", mark="None"}
+Parsed command_ext[15] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (4)", mark="None"}
+Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" n - N; fib(n<3)=1", mark="None"}
+Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[18] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (5)", mark="None"}
+Parsed command_ext[19] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" FUNCTION fibbonaci", mark="None"}
+Parsed command_ext[20] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (6)", mark="None"}
+Parsed command_ext[21] { _ = { dst=0, src=0, param=4, type=C_LOAD}, comment=" (7, 8) Прочитать аргумент", mark="None"}
+Parsed command_ext[22] { _ = { dst=1, src=0, param=3, type=C_MOV_V}, comment=" (9, 10)", mark="None"}
+Parsed command_ext[23] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (11)", mark="None"}
+Parsed command_ext[24] { _ = { dst=0, src=0, param=0, type=C_JMP_S}, comment=" (12, 13)  Если < 3 - короткий путь", mark="fib_fast"}
+Parsed command_ext[25] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (14)", mark="None"}
+Parsed command_ext[26] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment=" (15, 16)  Если 3 - ответ 2", mark="fib_3"}
+Parsed command_ext[27] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment=" (17, 18) fib(n)=fib(n-1)+fib(n-2). n хранить в R0, поэтому R0 сохранить ОБЯЗАНЫ.", mark="None"}
+Parsed command_ext[28] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment=" (19)", mark="None"}
+Parsed command_ext[29] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (20, 21)", mark="None"}
+Parsed command_ext[30] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Сохранить только регистр R0 ", mark="None"}
+Parsed command_ext[31] { _ = { dst=0, src=3, param=25, type=C_STORE}, comment=" (22, 23)  PUSH R0 ", mark="None"}
+Parsed command_ext[32] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (24, 25)", mark="None"}
+Parsed command_ext[33] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (26, 27)", mark="None"}
+Parsed command_ext[34] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (28)", mark="None"}
+Parsed command_ext[35] { _ = { dst=0, src=0, param=40, type=C_MOV_V}, comment=" (29, 30)", mark="None"}
+Parsed command_ext[36] { _ = { dst=0, src=3, param=34, type=C_STORE}, comment=" (31, 32)  PUSH R0 ", mark="None"}
+Parsed command_ext[37] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (33, 34)", mark="None"}
+Parsed command_ext[38] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (35, 36)", mark="None"}
+Parsed command_ext[39] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (37)", mark="None"}
+Parsed command_ext[40] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (38, 39)", mark="fibbonaci"}
+Parsed command_ext[41] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (40)  POP R0 ", mark="None"}
+Parsed command_ext[42] { _ = { dst=0, src=3, param=44, type=C_STORE}, comment=" (41, 42)", mark="None"}
+Parsed command_ext[43] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (43, 44)", mark="None"}
+Parsed command_ext[44] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[45] { _ = { dst=2, src=0, param=5, type=C_LOAD}, comment=" (45, 46)  R2=fib(n-1)", mark="None"}
+Parsed command_ext[46] { _ = { dst=1, src=0, param=1, type=C_MOV_V}, comment=" (47, 48)", mark="None"}
+Parsed command_ext[47] { _ = { dst=0, src=1, param=0, type=C_SUB}, comment=" (49)  n-2", mark="None"}
+Parsed command_ext[48] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (50, 51)", mark="None"}
+Parsed command_ext[49] { _ = { dst=0, src=2, param=0, type=C_MOV}, comment=" (52)  теперь можно сохранять только R0", mark="None"}
+Parsed command_ext[50] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Сохранить только регистр R0 ", mark="None"}
+Parsed command_ext[51] { _ = { dst=0, src=3, param=56, type=C_STORE}, comment=" (53, 54)  PUSH R0 ", mark="None"}
+Parsed command_ext[52] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (55, 56)", mark="None"}
+Parsed command_ext[53] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (57, 58)", mark="None"}
+Parsed command_ext[54] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (59)", mark="None"}
+Parsed command_ext[55] { _ = { dst=0, src=0, param=71, type=C_MOV_V}, comment=" (60, 61)", mark="None"}
+Parsed command_ext[56] { _ = { dst=0, src=3, param=65, type=C_STORE}, comment=" (62, 63)  PUSH R0 ", mark="None"}
+Parsed command_ext[57] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (64, 65)", mark="None"}
+Parsed command_ext[58] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (66, 67)", mark="None"}
+Parsed command_ext[59] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (68)", mark="None"}
+Parsed command_ext[60] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (69, 70)", mark="fibbonaci"}
+Parsed command_ext[61] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (71)  POP R0 ", mark="None"}
+Parsed command_ext[62] { _ = { dst=0, src=3, param=75, type=C_STORE}, comment=" (72, 73)", mark="None"}
+Parsed command_ext[63] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (74, 75)", mark="None"}
+Parsed command_ext[64] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[65] { _ = { dst=2, src=0, param=5, type=C_LOAD}, comment=" (76, 77)  R0=fib(n-2)", mark="None"}
+Parsed command_ext[66] { _ = { dst=2, src=0, param=0, type=C_ADD}, comment=" (78)", mark="None"}
+Parsed command_ext[67] { _ = { dst=0, src=2, param=5, type=C_STORE}, comment=" (79, 80)", mark="None"}
+Parsed command_ext[68] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (81)  POP R0 ", mark="None"}
+Parsed command_ext[69] { _ = { dst=0, src=3, param=85, type=C_STORE}, comment=" (82, 83)", mark="None"}
+Parsed command_ext[70] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (84, 85)", mark="None"}
+Parsed command_ext[71] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[72] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[73] { _ = { dst=0, src=0, param=89, type=C_STORE}, comment=" (86, 87)", mark="None"}
+Parsed command_ext[74] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (88, 89)", mark="None"}
+Parsed command_ext[75] { _ = { dst=0, src=0, param=2, type=C_MOV_V}, comment=" (90, 91)", mark="None"}
+Parsed command_ext[76] { _ = { dst=0, src=0, param=5, type=C_STORE}, comment=" (92, 93)", mark="None"}
+Parsed command_ext[77] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (94)  POP R0 ", mark="None"}
+Parsed command_ext[78] { _ = { dst=0, src=3, param=98, type=C_STORE}, comment=" (95, 96)", mark="None"}
+Parsed command_ext[79] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (97, 98)", mark="None"}
+Parsed command_ext[80] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[81] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[82] { _ = { dst=0, src=0, param=102, type=C_STORE}, comment=" (99, 100)", mark="None"}
+Parsed command_ext[83] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (101, 102)", mark="None"}
+Parsed command_ext[84] { _ = { dst=1, src=0, param=0, type=C_MOV_V}, comment=" (103, 104)", mark="None"}
+Parsed command_ext[85] { _ = { dst=0, src=1, param=0, type=C_CMP}, comment=" (105)", mark="None"}
+Parsed command_ext[86] { _ = { dst=0, src=0, param=0, type=C_JMP_Z}, comment=" (106, 107)", mark="fib_zero"}
+Parsed command_ext[87] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (108, 109)", mark="None"}
+Parsed command_ext[88] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (110, 111)", mark="exit1"}
+Parsed command_ext[89] { _ = { dst=0, src=0, param=0, type=C_MOV_V}, comment=" (112, 113)", mark="None"}
+Parsed command_ext[90] { _ = { dst=0, src=0, param=5, type=C_STORE}, comment=" (114, 115)", mark="None"}
+Parsed command_ext[91] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (116)  POP R0 ", mark="None"}
+Parsed command_ext[92] { _ = { dst=0, src=3, param=120, type=C_STORE}, comment=" (117, 118)", mark="None"}
+Parsed command_ext[93] { _ = { dst=0, src=0, param=0, type=C_LOAD}, comment=" (119, 120)", mark="None"}
+Parsed command_ext[94] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[95] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="EXIT ", mark="None"}
+Parsed command_ext[96] { _ = { dst=0, src=0, param=124, type=C_STORE}, comment=" (121, 122)", mark="None"}
+Parsed command_ext[97] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (123, 124)", mark="None"}
+Parsed command_ext[98] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[99] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (125)", mark="None"}
+Parsed command_ext[100] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[101] { _ = { dst=0, src=0, param=5, type=C_MOV_V}, comment=" (126, 127)  fibbonaci(10)", mark="None"}
+Parsed command_ext[102] { _ = { dst=0, src=0, param=4, type=C_STORE}, comment=" (128, 129)", mark="None"}
+Parsed command_ext[103] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Не сохранять регистры ", mark="None"}
+Parsed command_ext[104] { _ = { dst=0, src=0, param=141, type=C_MOV_V}, comment=" (130, 131)", mark="None"}
+Parsed command_ext[105] { _ = { dst=0, src=3, param=135, type=C_STORE}, comment=" (132, 133)  PUSH R0 ", mark="None"}
+Parsed command_ext[106] { _ = { dst=0, src=0, param=0, type=C_STORE}, comment=" (134, 135)", mark="None"}
+Parsed command_ext[107] { _ = { dst=0, src=0, param=1, type=C_MOV_V}, comment=" (136, 137)", mark="None"}
+Parsed command_ext[108] { _ = { dst=3, src=0, param=0, type=C_SUB}, comment=" (138)", mark="None"}
+Parsed command_ext[109] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (139, 140)", mark="fibbonaci"}
+Parsed command_ext[110] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (141)", mark="None"}
+Parsed command_ext[111] { _ = { dst=0, src=0, param=5, type=C_LOAD}, comment=" (142, 143)", mark="None"}
+Parsed command_ext[112] { _ = { dst=0, src=0, param=207, type=C_STORE}, comment=" (144, 145)", mark="None"}
+Parsed command_ext[113] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[114] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (146, 147)", mark="HLT"}
+Parsed command_ext[115] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+[parsing.c:721]: Shorted length: 116
+[parsing.c:722]: Marks:
 mark_info_t = { name="_init", cmd_id=1 }
 mark_info_t = { name="_start", cmd_id=99 }
 mark_info_t = { name="var1", cmd_id=15 }
@@ -131,6 +131,6 @@ mark_info_t = { name="fib_zero", cmd_id=89 }
 mark_info_t = { name="exit1", cmd_id=90 }
 mark_info_t = { name="_start_fib", cmd_id=110 }
 mark_info_t = { name="HLT", cmd_id=114 }
-[linking.c:23]: Allocated 116 bytes (116 objects)
-[linking.c:75]: Size: 148
+[linking.c:99]: Allocated 116 bytes (116 objects)
+[linking.c:151]: Size: 148
 [assembler.c:60]: Succesfully assembled!

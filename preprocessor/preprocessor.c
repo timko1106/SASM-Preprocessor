@@ -6,7 +6,7 @@
 #include <errno.h>
 
 //Препроцессинг через 3 фазы.
-int preprocess (state_t* state, int fd_1, int fd_2) {
+int preprocess (state_t* state, int fd_1, int fd_2, bool need_init) {
 	state_t next = {};
 	next.buffer[0] = 0;
 	next.length = 0;
@@ -28,7 +28,7 @@ int preprocess (state_t* state, int fd_1, int fd_2) {
 		goto cleanup;
 	}
 	//Фаза 3: сохранение в файл в формате совместимом с SASM.
-	exit_code = stage_3 (&final, &parsed);
+	exit_code = stage_3 (&final, &parsed, need_init);
 	if (exit_code == EXIT_SUCCESS) {
 		write (fd_2, final.buffer, final.length);
 		PRINT ("Succesfully preprocessed!\n");
@@ -39,11 +39,12 @@ cleanup:
 }
 
 int main (int argc, const char** argv) {
-	if (argc == 0 || argc != 1 +3) {
-		PANIC ("Need 3 arguments:\n"
+	if (argc == 0 || (argc != 1 + 3 && argc != 1 + 4)) {
+		PANIC ("Need 3 arguments (+1 optional):\n"
 			"1) Name of input file\n"
 			"2) Name of output file with expanded macroses\n"
-			"3) Name of output file\n");
+			"3) Name of output file\n"
+			"4) Optional: any argument, if init isn't required\n");
 		return EXIT_FAILURE;
 	}
 	int exit_code = EXIT_SUCCESS;
@@ -72,7 +73,7 @@ int main (int argc, const char** argv) {
 	state.length = read (fd1, state.buffer, LIMIT - 1);
 	state.buffer[state.length] = 0;
 
-	exit_code = preprocess (&state, fd2, fd3);
+	exit_code = preprocess (&state, fd2, fd3, (argc == 1 + 3));
 	}
 END:
 	if (fd3 != -1) {

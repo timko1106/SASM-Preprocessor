@@ -1,46 +1,46 @@
-[parsing.c:644]: Allocated 864 bytes for commands (36 objects)
-[parsing.c:675]: Allocated 72 bytes for marks (3 objects)
+[parsing.c:635]: Allocated 864 bytes for commands (36 objects)
+[parsing.c:666]: Allocated 72 bytes for marks (3 objects)
 Parsed command_ext[0] { _ = { dst=3, src=0, param=255, type=C_MOV_V}, comment=" 0 1", mark="None"}
 Parsed command_ext[1] { _ = { dst=0, src=0, param=24, type=C_MOV_V}, comment=" LOAD register 2 at cmd_id=23", mark="None"}
 Parsed command_ext[2] { _ = { dst=0, src=0, param=25, type=C_STORE}, comment="", mark="None"}
 Parsed command_ext[3] { _ = { dst=0, src=0, param=34, type=C_MOV_V}, comment=" STORE register 2 at cmd_id=16", mark="None"}
 Parsed command_ext[4] { _ = { dst=0, src=0, param=17, type=C_STORE}, comment="", mark="None"}
 Parsed command_ext[5] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="_start"}
-Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Пусть регистр R03 отвечает за стек.;", mark="None"}
-Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...);", mark="None"}
-Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Поэтому для пробрасывания значения в стек будет использован "костыль";", mark="None"}
-Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  (сейчас для примера регистр R2):;", mark="None"}
-Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  1) write R2 по назначению;", mark="None"}
-Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  2) R2 = 1;", mark="None"}
-Parsed command_ext[13] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  3) R03 -= R2;", mark="None"}
-Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  Для взятия из стека нужен следующий метод (регистр R2):;", mark="None"}
-Parsed command_ext[15] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  1) inc R03;", mark="None"}
-Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="  2) read R2_", mark="None"}
-Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[18] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=12; 12) ", mark="None"}
-Parsed command_ext[19] { _ = { dst=2, src=0, param=21, type=C_MOV_V}, comment=" (cmd_id=13; 13, 14) ", mark="None"}
-Parsed command_ext[20] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[21] { _ = { dst=0, src=3, param=18, type=C_STORE}, comment=" (cmd_id=15; 15, 16) ", mark="None"}
-Parsed command_ext[22] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=16; 17) ", mark="None"}
-Parsed command_ext[23] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=17; 18) ", mark="None"}
-Parsed command_ext[24] { _ = { dst=2, src=0, param=1, type=C_MOV_V}, comment=" (cmd_id=18; 19, 20) ", mark="None"}
-Parsed command_ext[25] { _ = { dst=3, src=2, param=0, type=C_SUB}, comment=" (cmd_id=19; 21) ", mark="None"}
-Parsed command_ext[26] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[27] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (cmd_id=21; 22) ", mark="None"}
-Parsed command_ext[28] { _ = { dst=0, src=3, param=26, type=C_STORE}, comment=" (cmd_id=22; 23, 24) ", mark="None"}
-Parsed command_ext[29] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=23; 25) ", mark="None"}
-Parsed command_ext[30] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (cmd_id=24; 26) ", mark="None"}
-Parsed command_ext[31] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[32] { _ = { dst=0, src=3, param=84, type=C_STORE}, comment=" (cmd_id=26; 27, 28) ", mark="None"}
-Parsed command_ext[33] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-Parsed command_ext[34] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (cmd_id=28; 29, 30) ", mark="HLT"}
-Parsed command_ext[35] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" ", mark="None"}
-[parsing.c:730]: Shorted length: 36
-[parsing.c:731]: Marks:
+Parsed command_ext[6] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[7] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
+Parsed command_ext[8] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
+Parsed command_ext[9] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Поэтому для пробрасывания значения в стек будет использован "костыль"", mark="None"}
+Parsed command_ext[10] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" (сейчас для примера регистр R2):", mark="None"}
+Parsed command_ext[11] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) write R2 по назначению", mark="None"}
+Parsed command_ext[12] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) R2 = 1", mark="None"}
+Parsed command_ext[13] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 3) R03 -= R2", mark="None"}
+Parsed command_ext[14] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Для взятия из стека нужен следующий метод (регистр R2):", mark="None"}
+Parsed command_ext[15] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 1) inc R03", mark="None"}
+Parsed command_ext[16] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" 2) read R2", mark="None"}
+Parsed command_ext[17] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[18] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (12)", mark="None"}
+Parsed command_ext[19] { _ = { dst=2, src=0, param=21, type=C_MOV_V}, comment=" (13, 14)", mark="None"}
+Parsed command_ext[20] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[21] { _ = { dst=0, src=3, param=18, type=C_STORE}, comment=" (15, 16)", mark="None"}
+Parsed command_ext[22] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (17)", mark="None"}
+Parsed command_ext[23] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (18)", mark="None"}
+Parsed command_ext[24] { _ = { dst=2, src=0, param=1, type=C_MOV_V}, comment=" (19, 20)", mark="None"}
+Parsed command_ext[25] { _ = { dst=3, src=2, param=0, type=C_SUB}, comment=" (21)", mark="None"}
+Parsed command_ext[26] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[27] { _ = { dst=3, src=3, param=0, type=C_INC}, comment=" (22)", mark="None"}
+Parsed command_ext[28] { _ = { dst=0, src=3, param=26, type=C_STORE}, comment=" (23, 24)", mark="None"}
+Parsed command_ext[29] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (25)", mark="None"}
+Parsed command_ext[30] { _ = { dst=0, src=0, param=0, type=C_MOV}, comment=" (26)", mark="None"}
+Parsed command_ext[31] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[32] { _ = { dst=0, src=3, param=84, type=C_STORE}, comment=" (27, 28)", mark="None"}
+Parsed command_ext[33] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+Parsed command_ext[34] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment=" (29, 30)", mark="HLT"}
+Parsed command_ext[35] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
+[parsing.c:721]: Shorted length: 36
+[parsing.c:722]: Marks:
 mark_info_t = { name="_init", cmd_id=1 }
 mark_info_t = { name="_start", cmd_id=18 }
 mark_info_t = { name="HLT", cmd_id=34 }
-[linking.c:23]: Allocated 36 bytes (36 objects)
-[linking.c:75]: Size: 31
+[linking.c:99]: Allocated 36 bytes (36 objects)
+[linking.c:151]: Size: 31
 [assembler.c:60]: Succesfully assembled!

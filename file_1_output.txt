@@ -56,11 +56,11 @@ P: R0 <- R0"
 
 
 
-[parsing.c:644]: Allocated 864 bytes for commands (36 objects)
-[parsing.c:675]: Allocated 144 bytes for marks (6 objects)
-[parsing.c:679]: Allocated 2 bytes for loader marks (1 objects)
-[parsing.c:682]: Allocated 2 bytes for store marks (1 objects)
-[parsing.c:685]: Allocated 2 bytes for addresses marks (2 objects)
+[parsing.c:635]: Allocated 864 bytes for commands (36 objects)
+[parsing.c:666]: Allocated 144 bytes for marks (6 objects)
+[parsing.c:670]: Allocated 2 bytes for loader marks (1 objects)
+[parsing.c:673]: Allocated 2 bytes for store marks (1 objects)
+[parsing.c:676]: Allocated 2 bytes for addresses marks (2 objects)
 Parsed command_ext[0] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
 Parsed command_ext[1] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Пусть регистр R03 отвечает за стек.", mark="None"}
 Parsed command_ext[2] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment=" Стек начинается с адреса 0xFF и растёт вверх (=> хотелось бы декремент, но...)", mark="None"}
@@ -91,45 +91,45 @@ Parsed command_ext[26] { _ = { dst=0, src=3, param=84, type=C_STORE}, comment=""
 Parsed command_ext[27] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
 Parsed command_ext[28] { _ = { dst=0, src=0, param=0, type=C_JMP}, comment="", mark="HLT"}
 Parsed command_ext[29] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", mark="None"}
-[parsing.c:730]: Shorted length: 30
-[parsing.c:731]: Marks:
+[parsing.c:721]: Shorted length: 30
+[parsing.c:722]: Marks:
 mark_info_t = { name="_start", cmd_id=12 }
 mark_info_t = { name="P", cmd_id=17 }
 mark_info_t = { name="S", cmd_id=16 }
 mark_info_t = { name="P", cmd_id=24 }
 mark_info_t = { name="L", cmd_id=23 }
 mark_info_t = { name="HLT", cmd_id=28 }
-[linking.c:23]: Allocated 30 bytes (30 objects)
-[linking.c:75]: Size: 31
-[preprocessor_stage_3.c:32]: Allocated 48 bytes (6 blocks)
-[preprocessor_stage_3.c:183]: Length: 150, cmd_id: 0
-[preprocessor_stage_3.c:183]: Length: 216, cmd_id: 1
-[preprocessor_stage_3.c:183]: Length: 353, cmd_id: 2
-[preprocessor_stage_3.c:183]: Length: 486, cmd_id: 3
-[preprocessor_stage_3.c:183]: Length: 546, cmd_id: 4
-[preprocessor_stage_3.c:183]: Length: 588, cmd_id: 5
-[preprocessor_stage_3.c:183]: Length: 602, cmd_id: 6
-[preprocessor_stage_3.c:183]: Length: 619, cmd_id: 7
-[preprocessor_stage_3.c:183]: Length: 721, cmd_id: 8
-[preprocessor_stage_3.c:183]: Length: 736, cmd_id: 9
-[preprocessor_stage_3.c:183]: Length: 751, cmd_id: 10
-[preprocessor_stage_3.c:183]: Length: 754, cmd_id: 11
-[preprocessor_stage_3.c:183]: Length: 792, cmd_id: 12
-[preprocessor_stage_3.c:183]: Length: 825, cmd_id: 13
-[preprocessor_stage_3.c:183]: Length: 828, cmd_id: 14
-[preprocessor_stage_3.c:183]: Length: 863, cmd_id: 15
-[preprocessor_stage_3.c:183]: Length: 894, cmd_id: 16
-[preprocessor_stage_3.c:183]: Length: 925, cmd_id: 17
-[preprocessor_stage_3.c:183]: Length: 957, cmd_id: 18
-[preprocessor_stage_3.c:183]: Length: 994, cmd_id: 19
-[preprocessor_stage_3.c:183]: Length: 997, cmd_id: 20
-[preprocessor_stage_3.c:183]: Length: 1030, cmd_id: 21
-[preprocessor_stage_3.c:183]: Length: 1065, cmd_id: 22
-[preprocessor_stage_3.c:183]: Length: 1096, cmd_id: 23
-[preprocessor_stage_3.c:183]: Length: 1127, cmd_id: 24
-[preprocessor_stage_3.c:183]: Length: 1130, cmd_id: 25
-[preprocessor_stage_3.c:183]: Length: 1165, cmd_id: 26
-[preprocessor_stage_3.c:183]: Length: 1168, cmd_id: 27
-[preprocessor_stage_3.c:183]: Length: 1206, cmd_id: 28
-[preprocessor_stage_3.c:183]: Length: 1209, cmd_id: 29
+[linking.c:99]: Allocated 30 bytes (30 objects)
+[linking.c:151]: Size: 31
+[preprocessor_stage_3.c:33]: Allocated 48 bytes (6 blocks)
+[preprocessor_stage_3.c:126]: Length: 148, cmd_id: 0
+[preprocessor_stage_3.c:126]: Length: 212, cmd_id: 1
+[preprocessor_stage_3.c:126]: Length: 347, cmd_id: 2
+[preprocessor_stage_3.c:126]: Length: 478, cmd_id: 3
+[preprocessor_stage_3.c:126]: Length: 536, cmd_id: 4
+[preprocessor_stage_3.c:126]: Length: 576, cmd_id: 5
+[preprocessor_stage_3.c:126]: Length: 588, cmd_id: 6
+[preprocessor_stage_3.c:126]: Length: 603, cmd_id: 7
+[preprocessor_stage_3.c:126]: Length: 703, cmd_id: 8
+[preprocessor_stage_3.c:126]: Length: 716, cmd_id: 9
+[preprocessor_stage_3.c:126]: Length: 729, cmd_id: 10
+[preprocessor_stage_3.c:126]: Length: 730, cmd_id: 11
+[preprocessor_stage_3.c:126]: Length: 756, cmd_id: 12
+[preprocessor_stage_3.c:126]: Length: 778, cmd_id: 13
+[preprocessor_stage_3.c:126]: Length: 779, cmd_id: 14
+[preprocessor_stage_3.c:126]: Length: 802, cmd_id: 15
+[preprocessor_stage_3.c:126]: Length: 821, cmd_id: 16
+[preprocessor_stage_3.c:126]: Length: 840, cmd_id: 17
+[preprocessor_stage_3.c:126]: Length: 861, cmd_id: 18
+[preprocessor_stage_3.c:126]: Length: 886, cmd_id: 19
+[preprocessor_stage_3.c:126]: Length: 887, cmd_id: 20
+[preprocessor_stage_3.c:126]: Length: 908, cmd_id: 21
+[preprocessor_stage_3.c:126]: Length: 931, cmd_id: 22
+[preprocessor_stage_3.c:126]: Length: 950, cmd_id: 23
+[preprocessor_stage_3.c:126]: Length: 969, cmd_id: 24
+[preprocessor_stage_3.c:126]: Length: 970, cmd_id: 25
+[preprocessor_stage_3.c:126]: Length: 993, cmd_id: 26
+[preprocessor_stage_3.c:126]: Length: 994, cmd_id: 27
+[preprocessor_stage_3.c:126]: Length: 1021, cmd_id: 28
+[preprocessor_stage_3.c:126]: Length: 1022, cmd_id: 29
 [preprocessor.c:34]: Succesfully preprocessed!
