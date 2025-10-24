@@ -5,7 +5,7 @@ OBJDIR := $(BIN)/obj/emulator
 
 LDFLAGS := -lncursesw
 
-OBJS := $(OBJDIR)/emulator.o $(OBJDIR)/load.o $(OBJDIR)/executor.o $(OBJDIR)/../common/common.o $(OBJDIR)/../common/linking.o
+OBJS := $(OBJDIR)/emulator.o $(OBJDIR)/load.o $(OBJDIR)/executor.o $(OBJDIR)/../common/common.o
 
 TARGET := $(BIN)/emulator
 

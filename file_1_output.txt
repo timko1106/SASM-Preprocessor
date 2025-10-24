@@ -99,8 +99,8 @@ mark_info_t = { name="S", cmd_id=16 }
 mark_info_t = { name="P", cmd_id=24 }
 mark_info_t = { name="L", cmd_id=23 }
 mark_info_t = { name="HLT", cmd_id=28 }
-[linking.c:99]: Allocated 30 bytes (30 objects)
-[linking.c:151]: Size: 31
+[linking.c:23]: Allocated 30 bytes (30 objects)
+[linking.c:75]: Size: 31
 [preprocessor_stage_3.c:33]: Allocated 48 bytes (6 blocks)
 [preprocessor_stage_3.c:126]: Length: 148, cmd_id: 0
 [preprocessor_stage_3.c:126]: Length: 212, cmd_id: 1

@@ -41,6 +41,6 @@ Parsed command_ext[35] { _ = { dst=0, src=0, param=0, type=C_NONE}, comment="", 
 mark_info_t = { name="_init", cmd_id=1 }
 mark_info_t = { name="_start", cmd_id=18 }
 mark_info_t = { name="HLT", cmd_id=34 }
-[linking.c:99]: Allocated 36 bytes (36 objects)
-[linking.c:151]: Size: 31
+[linking.c:23]: Allocated 36 bytes (36 objects)
+[linking.c:75]: Size: 31
 [assembler.c:60]: Succesfully assembled!

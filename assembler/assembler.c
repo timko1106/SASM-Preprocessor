@@ -1,4 +1,4 @@
-#include "common.h"
+#include "../common/common.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -82,6 +82,7 @@ int main (int argc, const char** argv) {
 	state_t text = {};
 	text.length = read (fd1, text.buffer, sizeof (text.buffer) - 1);
 	text.buffer[text.length] = 0;
+
 	//Assemble.
 	const int exit_code = assembly (&text, fd2);
 	close (fd2);//Не знаю.

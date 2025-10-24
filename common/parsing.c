@@ -28,15 +28,6 @@ static void shortify (const char** _p) {
 	*_p = p;
 }
 
-typedef enum : uint8_t {
-	R0 = 0,
-	R1 = 1,
-	R2 = 2,
-	R3 = 3,
-	RC = 4,
-	RF = 5
-} reg_t;
-
 //Entity: register number/address/number/mark.
 typedef enum : uint8_t {
 	E_REGNO,
@@ -418,7 +409,7 @@ static int check (parsed_t* prog, bool extended_mode, local_state *st, unsigned 
 	}
 	if (start[0] == ';') {
 		cmd->comment = start + 1;
-		cmd->comment_length = length;
+		cmd->comment_length = length - 1;
 		cmd->_._type = C_NONE;
 		return EXIT_SUCCESS;
 	}

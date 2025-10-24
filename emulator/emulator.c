@@ -252,6 +252,7 @@ int run_emulator (machine_t* machine) {
 		mark_byte (1, machine, WHITE);
 	}
 	disassembling (machine);
+	wrefresh (program);
 	//noecho ();
 	//timeout (-1);
 	//keypad (stdscr, TRUE);

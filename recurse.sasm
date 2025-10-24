@@ -105,7 +105,7 @@ N: RC <- @0
 
 _start: R0 <- R0
 
-	R0 <- 10 ; fibbonaci(10)
+	R0 <- 5 ; fibbonaci(10)
 	@var1 <- R0
 	 ; Не сохранять регистры 
 R0 <- [@_start_fib] 

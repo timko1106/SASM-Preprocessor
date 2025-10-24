@@ -1,5 +1,83 @@
 #include "common.h"
 
+unsigned disassemble (const command_t* cmd, bool is_extended, char* line, word m_count, mark_info_t* marks) {
+	unsigned len = 0;
+	switch (cmd->_type) {
+	case C_NONE:
+		break;
+	case C_MOV:
+		len = sprintf (line, 
+			"R0%u <- R0%u",
+			cmd->dst, cmd->src);
+		break;
+	case C_MOV_V:
+		len = sprintf (line, 
+			"R0%u <- %u",
+			cmd->dst, cmd->param);
+		break;
+	case C_LOAD:
+		len = sprintf (line, 
+			"R0%u <- @%u",
+			cmd->dst, cmd->param);
+		break;
+	case C_STORE:
+		len = sprintf (line, 
+			"@%u <- R0%u",
+			cmd->param, cmd->src);
+		break;
+	case C_ADD:
+	case C_SUB:
+	case C_MUL:
+	case C_DIV:;
+		static const char operations[] = "+-*/";
+		len = sprintf (line, 
+			"R0%u <- R0%u %c R0%u",
+			cmd->dst, cmd->dst, operations[cmd->_type - C_ADD], cmd->src);
+		break;
+	case C_CMP:
+		len = sprintf (line, 
+			"RF <- R0%u ~ R0%u",
+			cmd->dst, cmd->src);
+		break;
+	case C_JMP_C:
+	case C_JMP_S:
+	case C_JMP_Z:
+	case C_JMP:;
+		static const char buff[] = "CSZ";
+		static const char BEGIN[] = "RC <- @";
+		memcpy (line, BEGIN, sizeof (BEGIN) - 1);
+		len = sizeof (BEGIN) - 1;
+		if (!is_extended || ((command_ext_t*)cmd)->mark_id == m_count) {
+			len += sprintf (line + len, 
+				"%u ", cmd->param);
+		} else {
+			const mark_info_t* info = marks + ((command_ext_t*)cmd)->mark_id;
+			memcpy (line + len, info->name, info->mark_len);
+			len += info->mark_len;
+		}
+		if (cmd->_type != C_JMP) {
+			line[len++] = '(';
+			line[len++] = buff[cmd->_type - C_JMP_C];
+			line[len++] = ')';
+		}
+		line[len] = 0;
+		break;
+	case C_RAND:
+		len = sprintf (line, 
+			"R0%u <- ?",
+			cmd->dst);
+		break;
+	case C_INC:
+		len = sprintf (line, 
+			"R0%u <- R0%u++",
+			cmd->dst, cmd->src);
+		break;
+	}
+	return len;
+}
+
+
+
 bool is_valid (char x) {
 	return isalpha (x) || isdigit (x) || x == '_';
 }

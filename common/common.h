@@ -34,7 +34,7 @@
 
 #define COMMENT ';'
 
-#define REGISTERS 4
+#define REGISTERS RC
 
 #define REF_OPEN '['
 #define REF_CLOSE ']'
@@ -96,7 +96,17 @@ typedef enum : word {
 	C_NONE 	= 15
 } cmd_t;//C_NONE can be used as just comment.
 
-extern const uint8_t sizes[16];
+typedef enum : word {
+	R0 = 0,
+	R1 = 1,
+	R2 = 2,
+	R3 = 3,
+	RC = 4,
+	RF = 5
+} reg_t;
+
+
+extern const word sizes[16];
 
 extern const char* const cmd_names[16];
 
@@ -166,6 +176,8 @@ int parse (state_t* state, parsed_t* program, bool extended_mode);
 //linker - all marks should get their addresses (in final program).
 //Commands get addresses of marks.
 int linker (parsed_t* program, word offset);
+
+unsigned disassemble (const command_t* cmd, bool is_extended, char* line, word m_count, mark_info_t* marks);
 
 #define size_calc(type, count) (sizeof(type) * ((size_t)(count)) )
 #define alloc(type, count) (type*) malloc(size_calc (type, count))

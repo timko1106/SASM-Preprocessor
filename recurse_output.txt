@@ -274,8 +274,8 @@ mark_info_t = { name="_start", cmd_id=97 }
 mark_info_t = { name="_start_fib", cmd_id=108 }
 mark_info_t = { name="N", cmd_id=104 }
 mark_info_t = { name="HLT", cmd_id=112 }
-[linking.c:99]: Allocated 114 bytes (114 objects)
-[linking.c:151]: Size: 148
+[linking.c:23]: Allocated 114 bytes (114 objects)
+[linking.c:75]: Size: 148
 [preprocessor_stage_3.c:33]: Allocated 200 bytes (25 blocks)
 [preprocessor_stage_3.c:126]: Length: 39, cmd_id: 0
 [preprocessor_stage_3.c:126]: Length: 103, cmd_id: 1

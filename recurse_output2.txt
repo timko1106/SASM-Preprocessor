@@ -131,6 +131,6 @@ mark_info_t = { name="fib_zero", cmd_id=89 }
 mark_info_t = { name="exit1", cmd_id=90 }
 mark_info_t = { name="_start_fib", cmd_id=110 }
 mark_info_t = { name="HLT", cmd_id=114 }
-[linking.c:99]: Allocated 116 bytes (116 objects)
-[linking.c:151]: Size: 148
+[linking.c:23]: Allocated 116 bytes (116 objects)
+[linking.c:75]: Size: 148
 [assembler.c:60]: Succesfully assembled!
